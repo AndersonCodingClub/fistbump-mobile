@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
 import { useFonts } from 'expo-font';
 import React from 'react';
 
@@ -9,40 +9,48 @@ type BackgroundButtonProps = {
 };
 
 const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isEnabled }) => (
-    <TouchableOpacity onPress={onPress} disabled={!isEnabled} style={[styles.authButtonBase, { backgroundColor: isEnabled ? '#FFE033' : 'lightgray' }]}>
+    <TouchableOpacity onPress={onPress} disabled={!isEnabled} style={[styles.authButtonBase, { backgroundColor: isEnabled ? '#F9724D' : 'lightgray' }]}>
         <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
 );
 
-function LogInScreen() {
+function SignUpScreen({navigation}: {navigation: any} ) {
     const [fontsLoaded] = useFonts({
         'Roobert': require('./assets/Roobert-Regular.ttf'),
         'Roobert-Bold': require('./assets/Roobert-Bold.otf')
     });
 
-    const [username, onInputChangeText] = React.useState('');
-    const [password, onPasswordChangeText] = React.useState('');
-    const isButtonEnabled = username.length > 0 && password.length > 0;
-
-    const handlePress = () => {
-        if (isButtonEnabled) {
-            alert("Logged In");
-        }
-    };
+    const [name, onNameInputChangeText] = React.useState('');
+    const [username, onUserNameInputChangeText] = React.useState('');
+    const [password, onPasswordInputChangeText] = React.useState('');
+    const isButtonEnabled = username.length > 0 && password.length > 0 && name.length > 0;
 
     return (
-        <View style={styles.container}>
-            <View style={[styles.subtextContainer, styles.centerContainer]}>
-                <Text style={styles.logoSubText}>Log In</Text>
+        <View>
+            <View style={{marginTop: 30, marginLeft: 135}}>
+                <Text style={styles.title}>Sign Up</Text>            
             </View>
-            <View style={{marginTop: 60, marginLeft: 50}}>
+            <View style={{marginTop: 30, marginLeft: 50}}>
                 <Text style={styles.inputLabel}>
-                    Username or Email
+                    Name
+                </Text>
+                <TextInput
+                    style={styles.input}
+                    value={name}
+                    onChangeText={name => onNameInputChangeText(name)}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+    
+                />
+            </View>
+            <View style={{marginLeft: 50}}>
+                <Text style={styles.inputLabel}>
+                    Username
                 </Text>
                 <TextInput
                     style={styles.input}
                     value={username}
-                    onChangeText={username => onInputChangeText(username)}
+                    onChangeText={username => onUserNameInputChangeText(username)}
                     autoCapitalize={'none'}
                     autoCorrect={false}
                 />
@@ -54,7 +62,7 @@ function LogInScreen() {
                 <TextInput
                     style={styles.input}
                     value={password}
-                    onChangeText={password => onPasswordChangeText(password)}
+                    onChangeText={password => onPasswordInputChangeText(password)}
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     secureTextEntry={true}
@@ -62,11 +70,7 @@ function LogInScreen() {
                 />
             </View>
             <View style={[styles.buttonContainer, styles.centerContainer]}>
-                <BackgroundButton 
-                    onPress={handlePress}
-                    title="Log In" 
-                    isEnabled={isButtonEnabled}
-                />
+                <BackgroundButton onPress={() => navigation.navigate('Next Sign Up')} title="Next" isEnabled={isButtonEnabled}></BackgroundButton>
             </View>
         </View>
     );
@@ -75,41 +79,27 @@ function LogInScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-
-    subtextContainer: {
-        marginTop: 120
-    },
-
-    logoContainer: {
-        flex: 2,
-        flexDirection: 'column',
+        backgroundColor: '#6FB4EB',
         alignItems: 'center',
-        marginTop: 85,
-        marginBottom: 115
+
     },
-    
+
+    title: {
+        marginTop: '30%',
+        fontSize: 35,
+        fontFamily: 'Roobert-Bold',
+        color: '#372F35'
+    },
+
     centerContainer: {
         alignItems: 'center',
         justifyContent: 'center'
     },
 
-    logo: {
-        width: 100,
-        height: 100
-    },
-
-    logoSubText: {
-        fontFamily: 'Roobert-Bold',
-        fontSize: 35,
-        color: '#372F35'
-    },
-
     inputContainer: {
         flex: 2,
         width: '100%',
-        flexDirection: 'column',
-        opacity: 0.
+        flexDirection: 'column'
     },
 
     inputLabel: {
@@ -132,7 +122,7 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        marginTop: 100
+        marginTop: 45,
     },
 
     authButtonBase: {
@@ -154,4 +144,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default LogInScreen;
+export default SignUpScreen;

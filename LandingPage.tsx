@@ -33,7 +33,7 @@ const LandingPage = ({navigation}: {navigation: any}) => {
                 <Text style={styles.sloganText}>Connect in the real world.</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <BackgroundButton onPress={() => navigation.navigate('Log In')} title="Log In" additionalBackground='#FEF445'></BackgroundButton>
+                <BackgroundButton onPress={() => navigation.navigate('Log In')} title="Log In" additionalBackground='#FFE033'></BackgroundButton>
                 <BackgroundButton onPress={() => navigation.navigate('Sign Up')} title="Sign Up" additionalBackground='#F9724D'></BackgroundButton>
             </View>
         </View>
