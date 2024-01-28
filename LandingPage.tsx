@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 
 type BackgroundButtonProps = {
