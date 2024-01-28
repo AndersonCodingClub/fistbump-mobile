@@ -1,22 +1,34 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import * as React from 'react';
+import { useFonts } from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LandingPage from './LandingPage';
-import SignUp from './SignUp';
-
+import LogInPage from './LoginPage';
+import SignUpPage from './SignupPage';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-    return (
-        <NavigationContainer>{
-            <Stack.Navigator screenOptions={{
-                headerShown: false
-            }}>
-                <Stack.Screen name="LandingPage" component={LandingPage} />
-                <Stack.Screen name="SignUp" component={SignUp} />
-          </Stack.Navigator>
-          }</NavigationContainer>
-    );
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen 
+          name="Home" 
+          component={LandingPage} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="Log In"
+          component={LogInPage}
+          options={{ headerShown: true, headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "Back" }}
+        />
+        <Stack.Screen 
+          name="Sign Up" 
+          component={SignUpPage} 
+          options={{ headerShown: true,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "Back" }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }

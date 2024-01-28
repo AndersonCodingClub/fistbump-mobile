@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
-import { PropsWithChildren } from 'react';
 
 type BackgroundButtonProps = {
   onPress: () => void;
@@ -29,8 +28,8 @@ const LandingPage = ({navigation}: {navigation: any}) => {
                 <Text style={styles.sloganText}>Connect in the real world.</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <BackgroundButton onPress={() => alert("login")} title="Log In" additionalBackground='#FEF445'></BackgroundButton>
-                <BackgroundButton onPress={() => navigation.navigate('SignUp')} title="Sign Up" additionalBackground='#F9724D'></BackgroundButton>
+                <BackgroundButton onPress={() => navigation.navigate('Log In')} title="Log In" additionalBackground='#FEF445'></BackgroundButton>
+                <BackgroundButton onPress={() => navigation.navigate('Sign Up')} title="Sign Up" additionalBackground='#F9724D'></BackgroundButton>
             </View>
         </View>
     );
