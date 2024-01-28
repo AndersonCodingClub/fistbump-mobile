@@ -15,7 +15,7 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, add
 
 export default function App() {
     const [fontsLoaded] = useFonts({
-        'Interstate': require('./assets/interstate-bold-cond.otf'),
+        'Interstate': require('./assets/Interstate-Regular.ttf'),
       });
 
     return (
@@ -27,7 +27,7 @@ export default function App() {
                 <Text style={styles.sloganText}>Connect in the Real World</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <BackgroundButton onPress={() => alert("Log In")} title="Log In" additionalBackground='#FAD161'></BackgroundButton>
+                <BackgroundButton onPress={() => alert("Log In")} title="Log In" additionalBackground='#FEF445'></BackgroundButton>
                 <BackgroundButton onPress={() => alert("Sign Up")} title="Sign Up" additionalBackground='#F9724D'></BackgroundButton>
             </View>
         </View>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
      },
 
     sloganText: {
-        fontSize: 35,
+        fontSize: 25,
         fontWeight: 'bold',
         textAlign: 'center',
         color: '#372F35',
@@ -78,9 +78,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 30,
         paddingBottom: 30,
-        paddingLeft: 100,
-        paddingRight: 100,
-        borderRadius: 10
+        paddingLeft: 90,
+        paddingRight: 90,
+        borderRadius: 0
     },
 
     buttonText: {
