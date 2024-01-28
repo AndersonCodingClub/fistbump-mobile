@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 type BackgroundButtonProps = {
@@ -18,6 +19,10 @@ const LandingPage = ({navigation}: {navigation: any}) => {
         'Roobert': require('./assets/Roobert-Regular.ttf'),
         'Roobert-Bold': require('./assets/Roobert-Bold.otf')
       });
+
+    if (!fontsLoaded) {
+        return <AppLoading/>;
+    }
 
     return (
         <View style={styles.container}>
@@ -74,7 +79,6 @@ const styles = StyleSheet.create({
 
     authButtonBase: {
         justifyContent: 'center',
-        backgroundColor: 'green',
         alignItems: 'center',
         paddingTop: 30,
         paddingBottom: 30,
