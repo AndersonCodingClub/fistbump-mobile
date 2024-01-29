@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 type BackgroundButtonProps = {
@@ -19,6 +20,10 @@ const LandingPage = ({navigation}: {navigation: any}) => {
         'Roobert-Bold': require('./assets/Roobert-Bold.otf')
       });
 
+    if (!fontsLoaded) {
+        return <AppLoading/>;
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -28,7 +33,7 @@ const LandingPage = ({navigation}: {navigation: any}) => {
                 <Text style={styles.sloganText}>Connect in the real world.</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <BackgroundButton onPress={() => navigation.navigate('Log In')} title="Log In" additionalBackground='#FEF445'></BackgroundButton>
+                <BackgroundButton onPress={() => navigation.navigate('Log In')} title="Log In" additionalBackground='#FFE033'></BackgroundButton>
                 <BackgroundButton onPress={() => navigation.navigate('Sign Up')} title="Sign Up" additionalBackground='#F9724D'></BackgroundButton>
             </View>
         </View>
@@ -74,7 +79,6 @@ const styles = StyleSheet.create({
 
     authButtonBase: {
         justifyContent: 'center',
-        backgroundColor: 'green',
         alignItems: 'center',
         paddingTop: 30,
         paddingBottom: 30,
