@@ -20,6 +20,7 @@ export default function HomePage({navigation}: {navigation: any}) {
     const initialButtonHeight = 115;
     const [currentButtonHeight, setCurrentButtonHeight] = useState(initialButtonHeight);
     const buttonHeight = useRef(new Animated.Value(initialButtonHeight)).current;
+    const translateY = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         AsyncStorage.getItem('userID').then(retrievedUserID => {
@@ -60,12 +61,20 @@ export default function HomePage({navigation}: {navigation: any}) {
 
     const animateButton = () => {
         const finalHeight = isExpanded ? initialButtonHeight : screenHeight;
+        const textTranslateY = isExpanded ? 0 : 75;
 
-        Animated.timing(buttonHeight, {
-            toValue: finalHeight,
-            duration: 500,
-            useNativeDriver: false
-        }).start(() => {
+        Animated.parallel([
+            Animated.timing(buttonHeight, {
+                toValue: finalHeight,
+                duration: 500,
+                useNativeDriver: false
+            }),
+            Animated.timing(translateY, {
+                toValue: textTranslateY,
+                duration: 500,
+                useNativeDriver: true
+            }),
+        ]).start(() => {
             setIsExpanded(!isExpanded);
             setCurrentButtonHeight(finalHeight);
         });
@@ -80,7 +89,9 @@ export default function HomePage({navigation}: {navigation: any}) {
             </View>
             <Animated.View style={[styles.fistbumpButton, { height: buttonHeight }]} {...panResponder.panHandlers}>
                 <TouchableOpacity style={styles.buttonContent} onPress={animateButton}>
-                    <Text style={styles.fistbumpButtonText}>Fistbump</Text>
+                    <Animated.Text style={[styles.fistbumpButtonText, { transform: [{ translateY }] }]}>
+                        Fistbump
+                    </Animated.Text>
                 </TouchableOpacity>
             </Animated.View>
         </View>
