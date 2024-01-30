@@ -14,7 +14,7 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isE
     </TouchableOpacity>
 );
 
-function LogInScreen() {
+function LogInScreen({navigation}: {navigation: any}) {
     const [fontsLoaded] = useFonts({
         'Roobert': require('./assets/Roobert-Regular.ttf'),
         'Roobert-Bold': require('./assets/Roobert-Bold.otf')
@@ -39,7 +39,7 @@ function LogInScreen() {
             .then(response => response.json())
             .then(data => {
                 if (data.msg === 'SUCCESS') {
-                    alert('Valid Log In');
+                    navigation.navigate('Home')
                 } else {
                     alert('Log In Failed');
                 }

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LandingPage from './LandingPage';
 import LogInPage from './LoginPage';
+import HomePage from './HomePage';
 import SignUpPage from './SignupPage';
 import NextSignUpPage from './NextSignupPage';
 
@@ -13,10 +13,15 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Landing">
+        <Stack.Screen 
+          name="Landing" 
+          component={LandingPage} 
+          options={{ headerShown: false }}
+        />
         <Stack.Screen 
           name="Home" 
-          component={LandingPage} 
+          component={HomePage} 
           options={{ headerShown: false }}
         />
         <Stack.Screen 
