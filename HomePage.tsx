@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions } from 'react-native';
 
 export default function HomePage({navigation}: {navigation: any}) {
     const [fontsLoaded] = useFonts({
@@ -26,11 +26,34 @@ export default function HomePage({navigation}: {navigation: any}) {
         });
     }, []);
 
+    const [isExpanded, setIsExpanded] = useState(false);
+    const screenHeight = Dimensions.get('window').height;
+    const initialButtonHeight = 115;
+    const buttonHeight = useRef(new Animated.Value(initialButtonHeight)).current;
+    const animateButton = () => {
+        const finalValue = isExpanded ? initialButtonHeight : screenHeight;
+
+        Animated.timing(buttonHeight, {
+            toValue: finalValue,
+            duration: 500,
+            useNativeDriver: false
+        }).start(() => {
+            setIsExpanded(!isExpanded);
+        });
+    };
+
     return (
         <View style={styles.container}>
-            <Text style={styles.titleText}>
-                {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
-            </Text>
+            <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>
+                    {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
+                </Text>
+            </View>
+            <Animated.View style={[styles.fistbumpButton, { height: buttonHeight }]}>
+                <TouchableOpacity style={styles.buttonContent} onPress={animateButton}>
+                    <Text style={styles.fistbumpButtonText}>Fistbump</Text>
+                </TouchableOpacity>
+            </Animated.View>
         </View>
     );
 }
@@ -38,9 +61,11 @@ export default function HomePage({navigation}: {navigation: any}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: '#E3E3E3'
+    },
+
+    titleContainer: {
+        marginTop: 100
     },
 
     titleText: {
@@ -48,5 +73,36 @@ const styles = StyleSheet.create({
         color: '#372F35',
         fontSize: 45,
         textAlign: 'center'
+    },
+
+    fistbumpButtonContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginBottom: 0
+    },
+
+    fistbumpButton: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: '#BCB4F7',
+        width: '100%',
+        borderRadius: 25,
+        paddingTop: 25,
+        paddingBottom: 50,
+        justifyContent: 'center'
+    },
+
+    buttonContent: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    fistbumpButtonText: {
+        fontFamily: 'Roobert-Bold',
+        color: '#372F35',
+        textAlign: 'center',
+        fontSize: 35
     }
 });
