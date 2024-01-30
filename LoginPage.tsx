@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import React from 'react';
 
@@ -39,7 +40,9 @@ function LogInScreen({navigation}: {navigation: any}) {
             .then(response => response.json())
             .then(data => {
                 if (data.msg === 'SUCCESS') {
-                    navigation.navigate('Home')
+                    AsyncStorage.setItem('userID', data.userID.toString()).then(() => {
+                        navigation.navigate('Home');
+                    });
                 } else {
                     alert('Log In Failed');
                 }
