@@ -28,16 +28,28 @@ export default function HomePage({navigation}: {navigation: any}) {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const screenHeight = Dimensions.get('window').height;
-    const initialButtonHeight = 115;
-    const buttonHeight = useRef(new Animated.Value(initialButtonHeight)).current;
-    const animateButton = () => {
-        const finalValue = isExpanded ? initialButtonHeight : screenHeight;
 
-        Animated.timing(buttonHeight, {
-            toValue: finalValue,
-            duration: 500,
-            useNativeDriver: false
-        }).start(() => {
+    const initialButtonHeight = 115;
+
+    const buttonHeight = useRef(new Animated.Value(initialButtonHeight)).current;
+    const translateY = useRef(new Animated.Value(0)).current;
+
+    const animateButton = () => {
+        const finalHeight = isExpanded ? initialButtonHeight : screenHeight;
+        const finalTranslateY = isExpanded ? 0 : 75;
+
+        Animated.parallel([
+            Animated.timing(buttonHeight, {
+                toValue: finalHeight,
+                duration: 500,
+                useNativeDriver: false
+            }),
+            Animated.timing(translateY, {
+                toValue: finalTranslateY,
+                duration: 500,
+                useNativeDriver: false 
+            }),
+        ]).start(() => {
             setIsExpanded(!isExpanded);
         });
     };
@@ -51,7 +63,9 @@ export default function HomePage({navigation}: {navigation: any}) {
             </View>
             <Animated.View style={[styles.fistbumpButton, { height: buttonHeight }]}>
                 <TouchableOpacity style={styles.buttonContent} onPress={animateButton}>
-                    <Text style={styles.fistbumpButtonText}>Fistbump</Text>
+                    <Animated.Text style={[styles.fistbumpButtonText, {transform: [{ translateY: translateY }]}]}>
+                        Fistbump
+                    </Animated.Text>
                 </TouchableOpacity>
             </Animated.View>
         </View>
@@ -91,7 +105,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         paddingTop: 25,
         paddingBottom: 50,
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     },
 
     buttonContent: {
