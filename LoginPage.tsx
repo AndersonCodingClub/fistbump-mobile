@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import TcpSocket from 'react-native-tcp-socket';
 import { useFonts } from 'expo-font';
 import React from 'react';
 
@@ -26,7 +27,37 @@ function LogInScreen() {
 
     const handlePress = () => {
         if (isButtonEnabled) {
-            alert("Logged In");
+            const client = TcpSocket.createConnection({ port: 3000, host: 'localhost' }, () => {
+                const payload = JSON.stringify({
+                    operation: 'LOGIN',
+                    username: username,
+                    password: password
+                });
+        
+                client.write(payload);
+            });
+        
+            client.on('data', (data) => {
+                try {
+                    const response = JSON.parse(data.toString());
+                    if (response.msg === 'SUCCESS') {
+                        alert('SUCCESS')
+                    } else {
+                        alert('FAIL')
+                    }
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                }
+                client.destroy();
+            });
+        
+            client.on('error', (error) => {
+                console.error('TCP Socket Error:', error);
+            });
+        
+            client.on('close', () => {
+                console.log('Connection closed');
+            });
         }
     };
 

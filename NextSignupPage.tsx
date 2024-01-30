@@ -29,7 +29,7 @@ const Dropdown = () => {
       { label: 'Computer Science', value: 'Computer Science' },
       { label: 'Business', value: 'Business' },
       { label: 'Economics', value: 'Economics' },
-      { label: 'Biology', value: 'Biology'}
+      { label: 'Biology', value: 'Biology'},
     ];
   
     return (
