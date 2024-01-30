@@ -61,7 +61,7 @@ export default function HomePage({navigation}: {navigation: any}) {
 
     const animateButton = () => {
         const finalHeight = isExpanded ? initialButtonHeight : screenHeight;
-        const textTranslateY = isExpanded ? 0 : 75;
+        const textTranslateY = isExpanded ? 0 : 100;
 
         Animated.parallel([
             Animated.timing(buttonHeight, {
