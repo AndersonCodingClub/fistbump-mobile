@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
-import TcpSocket from 'react-native-tcp-socket';
 import { useFonts } from 'expo-font';
 import React from 'react';
 
@@ -27,36 +26,27 @@ function LogInScreen() {
 
     const handlePress = () => {
         if (isButtonEnabled) {
-            const client = TcpSocket.createConnection({ port: 3000, host: 'localhost' }, () => {
-                const payload = JSON.stringify({
-                    operation: 'LOGIN',
+            fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
                     username: username,
-                    password: password
-                });
-        
-                client.write(payload);
-            });
-        
-            client.on('data', (data) => {
-                try {
-                    const response = JSON.parse(data.toString());
-                    if (response.msg === 'SUCCESS') {
-                        alert('SUCCESS')
-                    } else {
-                        alert('FAIL')
-                    }
-                } catch (error) {
-                    console.error('Error parsing response:', error);
+                    password: password,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.msg === 'SUCCESS') {
+                    alert('Valid Log In');
+                } else {
+                    alert('Log In Failed');
                 }
-                client.destroy();
-            });
-        
-            client.on('error', (error) => {
-                console.error('TCP Socket Error:', error);
-            });
-        
-            client.on('close', () => {
-                console.log('Connection closed');
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Network error');
             });
         }
     };
