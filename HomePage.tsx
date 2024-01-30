@@ -1,8 +1,8 @@
-import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
 import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, PanResponder } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 export default function HomePage({navigation}: {navigation: any}) {
     const [fontsLoaded] = useFonts({
@@ -11,46 +11,63 @@ export default function HomePage({navigation}: {navigation: any}) {
     });
 
     if (!fontsLoaded) {
-        return <AppLoading/>;
+        return <AppLoading />;
     }
 
     const [userID, setUserID] = React.useState<string | null>(null);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const screenHeight = Dimensions.get('window').height;
+    const initialButtonHeight = 115;
+    const [currentButtonHeight, setCurrentButtonHeight] = useState(initialButtonHeight);
+    const buttonHeight = useRef(new Animated.Value(initialButtonHeight)).current;
 
-    React.useEffect(() => {
+    useEffect(() => {
         AsyncStorage.getItem('userID').then(retrievedUserID => {
             if (retrievedUserID !== null) {
                 setUserID(retrievedUserID);
             } else {
-                navigation.navigate('Landing')
+                navigation.navigate('Landing');
             }
         });
     }, []);
 
-    const [isExpanded, setIsExpanded] = useState(false);
-    const screenHeight = Dimensions.get('window').height;
+    const panResponder = useRef(
+        PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onMoveShouldSetPanResponder: () => true,
+            onPanResponderMove: (e, gestureState) => {
+                const newHeight = currentButtonHeight - gestureState.dy;
+                if (newHeight > initialButtonHeight && newHeight <= screenHeight) {
+                    buttonHeight.setValue(newHeight);
+                }
+            },
+            onPanResponderRelease: (e, gestureState) => {
+                const finalHeight = currentButtonHeight - gestureState.dy;
+                const thresholdHeight = screenHeight * 0.1;
+                const toValue = finalHeight >= thresholdHeight ? screenHeight : initialButtonHeight;
 
-    const initialButtonHeight = 115;
-
-    const buttonHeight = useRef(new Animated.Value(initialButtonHeight)).current;
-    const translateY = useRef(new Animated.Value(0)).current;
+                Animated.timing(buttonHeight, {
+                    toValue,
+                    duration: 500,
+                    useNativeDriver: false,
+                }).start(() => {
+                    setCurrentButtonHeight(toValue);
+                    setIsExpanded(finalHeight >= thresholdHeight);
+                });
+            },
+        })
+    ).current;
 
     const animateButton = () => {
         const finalHeight = isExpanded ? initialButtonHeight : screenHeight;
-        const finalTranslateY = isExpanded ? 0 : 75;
 
-        Animated.parallel([
-            Animated.timing(buttonHeight, {
-                toValue: finalHeight,
-                duration: 500,
-                useNativeDriver: false
-            }),
-            Animated.timing(translateY, {
-                toValue: finalTranslateY,
-                duration: 500,
-                useNativeDriver: false 
-            }),
-        ]).start(() => {
+        Animated.timing(buttonHeight, {
+            toValue: finalHeight,
+            duration: 500,
+            useNativeDriver: false
+        }).start(() => {
             setIsExpanded(!isExpanded);
+            setCurrentButtonHeight(finalHeight);
         });
     };
 
@@ -61,11 +78,9 @@ export default function HomePage({navigation}: {navigation: any}) {
                     {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
                 </Text>
             </View>
-            <Animated.View style={[styles.fistbumpButton, { height: buttonHeight }]}>
+            <Animated.View style={[styles.fistbumpButton, { height: buttonHeight }]} {...panResponder.panHandlers}>
                 <TouchableOpacity style={styles.buttonContent} onPress={animateButton}>
-                    <Animated.Text style={[styles.fistbumpButtonText, {transform: [{ translateY: translateY }]}]}>
-                        Fistbump
-                    </Animated.Text>
+                    <Text style={styles.fistbumpButtonText}>Fistbump</Text>
                 </TouchableOpacity>
             </Animated.View>
         </View>
