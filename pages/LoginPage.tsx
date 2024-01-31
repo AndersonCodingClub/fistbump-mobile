@@ -17,8 +17,8 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isE
 
 function LogInScreen({navigation}: {navigation: any}) {
     const [fontsLoaded] = useFonts({
-        'Roobert': require('./assets/Roobert-Regular.ttf'),
-        'Roobert-Bold': require('./assets/Roobert-Bold.otf')
+        'Roobert': require('../assets/Roobert-Regular.ttf'),
+        'Roobert-Bold': require('../assets/Roobert-Bold.otf')
     });
 
     const [username, onInputChangeText] = React.useState('');
@@ -27,7 +27,7 @@ function LogInScreen({navigation}: {navigation: any}) {
 
     const handlePress = () => {
         if (isButtonEnabled) {
-            fetch('http://10.9.150.219:3000/login', {
+            fetch('http://127.0.0.1:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

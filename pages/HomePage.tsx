@@ -4,17 +4,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
-export default function HomePage({navigation}: {navigation: any}) {
+export default function HomePage({ navigation }: {navigation: any}) {
     const [fontsLoaded] = useFonts({
-        'Roobert': require('./assets/Roobert-Regular.ttf'),
-        'Roobert-Bold': require('./assets/Roobert-Bold.otf')
+        'Roobert': require('../assets/Roobert-Regular.ttf'),
+        'Roobert-Bold': require('../assets/Roobert-Bold.otf')
     });
 
     if (!fontsLoaded) {
         return <AppLoading />;
     }
 
-    const [userID, setUserID] = React.useState<string | null>(null);
+    const [userID, setUserID] = useState<string | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
     const screenHeight = Dimensions.get('window').height;
     const initialButtonHeight = 115;
@@ -37,21 +37,32 @@ export default function HomePage({navigation}: {navigation: any}) {
             onStartShouldSetPanResponder: () => true,
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (e, gestureState) => {
-                const newHeight = currentButtonHeight - gestureState.dy;
+                const newHeight = initialButtonHeight - gestureState.dy;
+                const newTranslateY = -gestureState.dy / 2;
+
                 if (newHeight > initialButtonHeight && newHeight <= screenHeight) {
                     buttonHeight.setValue(newHeight);
+                    translateY.setValue(newTranslateY);
                 }
             },
             onPanResponderRelease: (e, gestureState) => {
-                const finalHeight = currentButtonHeight - gestureState.dy;
+                const finalHeight = initialButtonHeight - gestureState.dy;
                 const thresholdHeight = screenHeight * 0.1;
                 const toValue = finalHeight >= thresholdHeight ? screenHeight : initialButtonHeight;
+                const resetTranslateY = toValue === screenHeight ? 100 : 0;
 
-                Animated.timing(buttonHeight, {
-                    toValue,
-                    duration: 500,
-                    useNativeDriver: false,
-                }).start(() => {
+                Animated.parallel([
+                    Animated.timing(buttonHeight, {
+                        toValue,
+                        duration: 500,
+                        useNativeDriver: false,
+                    }),
+                    Animated.timing(translateY, {
+                        toValue: resetTranslateY,
+                        duration: 500,
+                        useNativeDriver: true,
+                    })
+                ]).start(() => {
                     setCurrentButtonHeight(toValue);
                     setIsExpanded(finalHeight >= thresholdHeight);
                 });

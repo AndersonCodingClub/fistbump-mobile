@@ -3,11 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import LandingPage from './LandingPage';
-import LogInPage from './LoginPage';
-import HomePage from './HomePage';
-import SignUpPage from './SignupPage';
-import NextSignUpPage from './NextSignupPage';
+import LandingPage from './pages/LandingPage';
+import LogInPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import SignUpPage from './pages/SignupPage';
+import NextSignUpPage from './pages/NextSignupPage';
 
 const Stack = createNativeStackNavigator();
 

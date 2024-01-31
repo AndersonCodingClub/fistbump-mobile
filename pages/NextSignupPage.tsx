@@ -17,6 +17,7 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isE
     </TouchableOpacity>
 );
 
+
 const Dropdown = () => {
     const [selectedValue, setSelectedValue] = useState(null);
   
@@ -43,17 +44,35 @@ const Dropdown = () => {
       </View>
     );
   };
+  function NextSignUpScreen({navigation}: {navigation: any} ) {
+    const [fontsLoaded] = useFonts({
+        'Roobert': require('../assets/Roobert-Regular.ttf'),
+        'Roobert-Bold': require('../assets/Roobert-Bold.otf')
+    });
 
-  const NextSignupScreen = () => {
+    const [age, setAge] = React.useState('');
+
     return (
-        <View style={styles.container}>
-            <View style={{marginLeft: 50, marginTop: 100}}>
-                <Text style={styles.inputLabel}> Major </Text>
-            </View>
+      <View style={styles.container}>
+        <View style={{marginLeft: 50, marginTop: 100}}>
+          <Text style={styles.inputLabel}>
+            Age
+          </Text>
+          <TextInput
+              style={styles.input}
+              value={age}
+              onChangeText={age => setAge(age)}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+          />
+        </View>
+        <View style={{marginLeft: 50, marginTop: 100}}>
+          <Text style={styles.inputLabel}>Major</Text>
             <View style={styles.input}>
-                <Dropdown />
+              <Dropdown />
             </View>
-       </View>
+        </View>
+      </View>
     );
   };
   
@@ -61,6 +80,12 @@ const Dropdown = () => {
     container: {
       flex: 1
     },
+    title: {
+      marginTop: '30%',
+      fontSize: 35,
+      fontFamily: 'Roobert-Bold',
+      color: '#372F35'
+  },
     authButtonBase: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -92,7 +117,8 @@ const Dropdown = () => {
         paddingRight: 20,
         color: '#372F35',
         fontSize: 16,
-        marginLeft: 50
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     inputLabel: {
@@ -104,4 +130,4 @@ const Dropdown = () => {
 
 });
 
-export default NextSignupScreen;
+export default NextSignUpScreen;

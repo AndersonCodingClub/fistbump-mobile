@@ -16,8 +16,8 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isE
 
 function SignUpScreen({navigation}: {navigation: any} ) {
     const [fontsLoaded] = useFonts({
-        'Roobert': require('./assets/Roobert-Regular.ttf'),
-        'Roobert-Bold': require('./assets/Roobert-Bold.otf')
+        'Roobert': require('../assets/Roobert-Regular.ttf'),
+        'Roobert-Bold': require('../assets/Roobert-Bold.otf')
     });
 
     const [name, onNameInputChangeText] = React.useState('');
