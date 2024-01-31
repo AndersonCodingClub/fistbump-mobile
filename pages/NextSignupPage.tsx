@@ -53,7 +53,11 @@ const Dropdown = () => {
     const [age, setAge] = React.useState('');
 
     return (
+      
       <View style={styles.container}>
+        <View style={[styles.subtextContainer, styles.centerContainer]}>
+                <Text style={styles.title}>Sign Up</Text>            
+        </View>
         <View style={{marginLeft: 50, marginTop: 100}}>
           <Text style={styles.inputLabel}>
             Age
@@ -81,7 +85,6 @@ const Dropdown = () => {
       flex: 1
     },
     title: {
-      marginTop: '30%',
       fontSize: 35,
       fontFamily: 'Roobert-Bold',
       color: '#372F35'
@@ -126,7 +129,16 @@ const Dropdown = () => {
         color: '#372F35',
         marginBottom: 5,
         fontFamily: 'Roobert-Bold',
-    }
+    },
+    
+    centerContainer: {
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+
+    subtextContainer: {
+      marginTop: 120
+    },
 
 });
 

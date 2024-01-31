@@ -27,7 +27,7 @@ function SignUpScreen({navigation}: {navigation: any} ) {
 
     return (
         <View>
-            <View style={{marginTop: 30, marginLeft: 135}}>
+            <View style={[styles.subtextContainer, styles.centerContainer]}>
                 <Text style={styles.title}>Sign Up</Text>            
             </View>
             <View style={{marginTop: 30, marginLeft: 50}}>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        marginTop: '30%',
+
         fontSize: 35,
         fontFamily: 'Roobert-Bold',
         color: '#372F35'
@@ -141,7 +141,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Roobert-Bold',
         textAlign: 'center',
         color: '#372F35'
-    }
+    },
+
+    subtextContainer: {
+        marginTop: 120
+    },
 });
 
 export default SignUpScreen;

@@ -27,7 +27,7 @@ function LogInScreen({navigation}: {navigation: any}) {
 
     const handlePress = () => {
         if (isButtonEnabled) {
-            fetch('http://127.0.0.1:3000/login', {
+            fetch('http://10.9.150.219:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ function LogInScreen({navigation}: {navigation: any}) {
     return (
         <View style={styles.container}>
             <View style={[styles.subtextContainer, styles.centerContainer]}>
-                <Text style={styles.logoSubText}>Log In</Text>
+                <Text style={styles.title}>Log In</Text>
             </View>
             <View style={{marginTop: 60, marginLeft: 50}}>
                 <Text style={styles.inputLabel}>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         height: 100
     },
 
-    logoSubText: {
+    title: {
         fontFamily: 'Roobert-Bold',
         fontSize: 35,
         color: '#372F35'
