@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useFonts } from 'expo-font';
 
@@ -75,6 +75,10 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
     const [age, setAge] = useState('');
     const [role, setRole] = useState(null);
 
+    const dismissKeyboard = () => {
+      Keyboard.dismiss();
+    };
+
     const renderMajorDropdown = () => {
         if (role === 'College') {
             return (
@@ -90,29 +94,31 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={[styles.subtextContainer, styles.centerContainer]}>
-                <Text style={styles.title}>Sign Up</Text>
-            </View>
-            <View style={{ marginLeft: 50, marginTop: 30 }}>
-                <Text style={styles.inputLabel}>Age</Text>
-                <TextInput
-                    style={styles.input}
-                    value={age}
-                    onChangeText={setAge}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    keyboardType="number-pad"
-                />
-            </View>
-            <View style={{ marginLeft: 50 }}>
-                <Text style={styles.inputLabel}>Education</Text>
-                <View style={styles.input}>
-                    <FirstDropdown onRoleChange={setRole} />
-                </View>
-                {renderMajorDropdown()}
-            </View>
-        </View>
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+          <View style={styles.container}>
+              <View style={[styles.subtextContainer, styles.centerContainer]}>
+                  <Text style={styles.title}>Sign Up</Text>
+              </View>
+              <View style={{ marginLeft: 50, marginTop: 30 }}>
+                  <Text style={styles.inputLabel}>Age</Text>
+                  <TextInput
+                      style={styles.input}
+                      value={age}
+                      onChangeText={setAge}
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      keyboardType="number-pad"
+                  />
+              </View>
+              <View style={{ marginLeft: 50 }}>
+                  <Text style={styles.inputLabel}>Education</Text>
+                  <View style={styles.input}>
+                      <FirstDropdown onRoleChange={setRole} />
+                  </View>
+                  {renderMajorDropdown()}
+              </View>
+          </View>
+        </TouchableWithoutFeedback>
     );
 };
 

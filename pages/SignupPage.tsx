@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useFonts } from 'expo-font';
 import React from 'react';
 
@@ -25,53 +25,59 @@ function SignUpScreen({navigation}: {navigation: any} ) {
     const [password, onPasswordInputChangeText] = React.useState('');
     const isButtonEnabled = username.length > 0 && password.length > 0 && name.length > 0;
 
+    const dismissKeyboard = () => {
+        Keyboard.dismiss();
+    };
+
     return (
-        <View>
-            <View style={[styles.subtextContainer, styles.centerContainer]}>
-                <Text style={styles.title}>Sign Up</Text>            
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+            <View>
+                <View style={[styles.subtextContainer, styles.centerContainer]}>
+                    <Text style={styles.title}>Sign Up</Text>            
+                </View>
+                <View style={{marginTop: 30, marginLeft: 50}}>
+                    <Text style={styles.inputLabel}>
+                        Name
+                    </Text>
+                    <TextInput
+                        style={styles.input}
+                        value={name}
+                        onChangeText={name => onNameInputChangeText(name)}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                    />
+                </View>
+                <View style={{marginLeft: 50}}>
+                    <Text style={styles.inputLabel}>
+                        Username
+                    </Text>
+                    <TextInput
+                        style={styles.input}
+                        value={username}
+                        onChangeText={username => onUserNameInputChangeText(username)}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                    />
+                </View>
+                <View style={{marginLeft: 50}}>
+                    <Text style={styles.inputLabel}>
+                        Password
+                    </Text>
+                    <TextInput
+                        style={styles.input}
+                        value={password}
+                        onChangeText={password => onPasswordInputChangeText(password)}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        textContentType={'password'}
+                    />
+                </View>
+                <View style={[styles.buttonContainer, styles.centerContainer]}>
+                    <BackgroundButton onPress={() => navigation.navigate('Next Sign Up')} title="Next" isEnabled={isButtonEnabled}></BackgroundButton>
+                </View>
             </View>
-            <View style={{marginTop: 30, marginLeft: 50}}>
-                <Text style={styles.inputLabel}>
-                    Name
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    value={name}
-                    onChangeText={name => onNameInputChangeText(name)}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                />
-            </View>
-            <View style={{marginLeft: 50}}>
-                <Text style={styles.inputLabel}>
-                    Username
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    value={username}
-                    onChangeText={username => onUserNameInputChangeText(username)}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                />
-            </View>
-            <View style={{marginLeft: 50}}>
-                <Text style={styles.inputLabel}>
-                    Password
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    value={password}
-                    onChangeText={password => onPasswordInputChangeText(password)}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    textContentType={'password'}
-                />
-            </View>
-            <View style={[styles.buttonContainer, styles.centerContainer]}>
-                <BackgroundButton onPress={() => navigation.navigate('Next Sign Up')} title="Next" isEnabled={isButtonEnabled}></BackgroundButton>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 

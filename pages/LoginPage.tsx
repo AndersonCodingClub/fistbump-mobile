@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import React from 'react';
@@ -24,6 +24,10 @@ function LogInScreen({navigation}: {navigation: any}) {
     const [username, onInputChangeText] = React.useState('');
     const [password, onPasswordChangeText] = React.useState('');
     const isButtonEnabled = username.length > 0 && password.length > 0;
+
+    const dismissKeyboard = () => {
+        Keyboard.dismiss();
+    };
 
     const handlePress = () => {
         if (isButtonEnabled) {
@@ -55,45 +59,47 @@ function LogInScreen({navigation}: {navigation: any}) {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={[styles.subtextContainer, styles.centerContainer]}>
-                <Text style={styles.title}>Log In</Text>
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+            <View style={styles.container}>
+                <View style={[styles.subtextContainer, styles.centerContainer]}>
+                    <Text style={styles.title}>Log In</Text>
+                </View>
+                <View style={{marginTop: 60, marginLeft: 50}}>
+                    <Text style={styles.inputLabel}>
+                        Username or Email
+                    </Text>
+                    <TextInput
+                        style={styles.input}
+                        value={username}
+                        onChangeText={username => onInputChangeText(username)}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        keyboardType="email-address"
+                    />
+                </View>
+                <View style={{marginLeft: 50}}>
+                    <Text style={styles.inputLabel}>
+                        Password
+                    </Text>
+                    <TextInput
+                        style={styles.input}
+                        value={password}
+                        onChangeText={password => onPasswordChangeText(password)}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        textContentType={'password'}
+                    />
+                </View>
+                <View style={[styles.buttonContainer, styles.centerContainer]}>
+                    <BackgroundButton 
+                        onPress={handlePress}
+                        title="Log In" 
+                        isEnabled={isButtonEnabled}
+                    />
+                </View>
             </View>
-            <View style={{marginTop: 60, marginLeft: 50}}>
-                <Text style={styles.inputLabel}>
-                    Username or Email
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    value={username}
-                    onChangeText={username => onInputChangeText(username)}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    keyboardType="email-address"
-                />
-            </View>
-            <View style={{marginLeft: 50}}>
-                <Text style={styles.inputLabel}>
-                    Password
-                </Text>
-                <TextInput
-                    style={styles.input}
-                    value={password}
-                    onChangeText={password => onPasswordChangeText(password)}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    textContentType={'password'}
-                />
-            </View>
-            <View style={[styles.buttonContainer, styles.centerContainer]}>
-                <BackgroundButton 
-                    onPress={handlePress}
-                    title="Log In" 
-                    isEnabled={isButtonEnabled}
-                />
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 
