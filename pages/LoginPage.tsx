@@ -27,7 +27,7 @@ function LogInScreen({navigation}: {navigation: any}) {
 
     const handlePress = () => {
         if (isButtonEnabled) {
-            fetch('http://10.9.150.219:3000/login', {
+            fetch('http://192.168.4.28:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,6 +69,7 @@ function LogInScreen({navigation}: {navigation: any}) {
                     onChangeText={username => onInputChangeText(username)}
                     autoCapitalize={'none'}
                     autoCorrect={false}
+                    keyboardType="email-address"
                 />
             </View>
             <View style={{marginLeft: 50}}>

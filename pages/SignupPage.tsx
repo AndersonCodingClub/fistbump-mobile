@@ -40,7 +40,6 @@ function SignUpScreen({navigation}: {navigation: any} ) {
                     onChangeText={name => onNameInputChangeText(name)}
                     autoCapitalize={'none'}
                     autoCorrect={false}
-    
                 />
             </View>
             <View style={{marginLeft: 50}}>
@@ -85,7 +84,6 @@ const styles = StyleSheet.create({
     },
 
     title: {
-
         fontSize: 35,
         fontFamily: 'Roobert-Bold',
         color: '#372F35'
