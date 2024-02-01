@@ -19,7 +19,7 @@ const FirstDropdown = ({onRoleChange}: {onRoleChange: any}) => {
     const [selectedValue, setSelectedValue] = useState(null);
 
     const placeholder = {
-        label: 'Select a role...',
+        label: 'Select your school type...',
         value: null,
     };
 
@@ -78,7 +78,7 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
     const renderMajorDropdown = () => {
         if (role === 'College') {
             return (
-                <View style={{ marginTop: 100 }}>
+                <View>
                     <Text style={styles.inputLabel}>Major</Text>
                     <View style={styles.input}>
                         <SecondDropdown />
@@ -94,7 +94,7 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
             <View style={[styles.subtextContainer, styles.centerContainer]}>
                 <Text style={styles.title}>Sign Up</Text>
             </View>
-            <View style={{ marginLeft: 50, marginTop: 100 }}>
+            <View style={{ marginLeft: 50, marginTop: 30 }}>
                 <Text style={styles.inputLabel}>Age</Text>
                 <TextInput
                     style={styles.input}
@@ -105,8 +105,8 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
                     keyboardType="number-pad"
                 />
             </View>
-            <View style={{ marginLeft: 50, marginTop: 100 }}>
-                <Text style={styles.inputLabel}>Role</Text>
+            <View style={{ marginLeft: 50 }}>
+                <Text style={styles.inputLabel}>Education</Text>
                 <View style={styles.input}>
                     <FirstDropdown onRoleChange={setRole} />
                 </View>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  
+
   title: {
     fontSize: 35,
     fontFamily: 'Roobert-Bold',
@@ -161,12 +161,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 50
   },
 
   inputLabel: {
     fontSize: 22.5,
     color: '#372F35',
-    marginBottom: 5,
+    marginBottom: 15,
     fontFamily: 'Roobert-Bold',
   },
   
