@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, KeyboardAvoidingView} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useFonts } from 'expo-font';
 
@@ -41,7 +41,7 @@ const FirstDropdown = ({onRoleChange}: {onRoleChange: any}) => {
     );
 };
 
-const SecondDropdown = () => {
+const SecondDropdown = ({onSecondRoleChange}: {onSecondRoleChange: any}) => {
     const [selectedValue, setSelectedValue] = useState(null);
 
     const placeholder = {
@@ -60,7 +60,10 @@ const SecondDropdown = () => {
         <RNPickerSelect
           placeholder={placeholder}
           items={options}
-          onValueChange={(value) => setSelectedValue(value)}
+          onValueChange={(value) => {
+              setSelectedValue(value);
+              onSecondRoleChange(value);
+          }}
           value={selectedValue}
         />
     );
@@ -74,6 +77,9 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
 
     const [age, setAge] = useState('');
     const [role, setRole] = useState(null);
+    const[secondRole, setSecondRole] = useState(null);
+    const isButtonEnabled = age.length > 0 && role !=null && secondRole !=null;
+
 
     const dismissKeyboard = () => {
       Keyboard.dismiss();
@@ -85,7 +91,7 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
                 <View>
                     <Text style={styles.inputLabel}>Major</Text>
                     <View style={styles.input}>
-                        <SecondDropdown />
+                        <SecondDropdown onSecondRoleChange={setSecondRole}/>
                     </View>
                 </View>
             );
@@ -95,7 +101,9 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
 
     return (
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
-          <View style={styles.container}>
+          <KeyboardAvoidingView 
+            behavior={'padding'}
+            style={styles.container}>
               <View style={[styles.subtextContainer, styles.centerContainer]}>
                   <Text style={styles.title}>Sign Up</Text>
               </View>
@@ -117,7 +125,11 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
                   </View>
                   {renderMajorDropdown()}
               </View>
-          </View>
+              <View style={[styles.buttonContainer, styles.centerContainer]}>
+                <BackgroundButton onPress={() => navigation.navigate('Home')} title="Next" isEnabled={isButtonEnabled}></BackgroundButton>
+            </View>
+          </KeyboardAvoidingView>
+         
         </TouchableWithoutFeedback>
     );
 };
@@ -184,7 +196,11 @@ const styles = StyleSheet.create({
 
   subtextContainer: {
     marginTop: 120
-  }
+  },
+  
+  buttonContainer: {
+    marginTop: 45,
+  },  
 });
 
 export default NextSignUpScreen;
