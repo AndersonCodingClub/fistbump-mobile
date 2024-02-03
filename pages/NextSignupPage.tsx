@@ -80,7 +80,6 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
     const[secondRole, setSecondRole] = useState(null);
     const isButtonEnabled = age.length > 0 && role !=null && secondRole !=null;
 
-
     const dismissKeyboard = () => {
       Keyboard.dismiss();
     };

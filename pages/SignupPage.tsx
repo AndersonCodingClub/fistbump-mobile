@@ -29,6 +29,32 @@ function SignUpScreen({navigation}: {navigation: any} ) {
         Keyboard.dismiss();
     };
 
+    const handlePress = () => {
+        if (isButtonEnabled) {
+            fetch('http://192.168.4.28:3000/validate-signup-credentials', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.msg === 'SUCCESS') {
+                    navigation.navigate('Next Sign Up');
+                } else {
+                    alert('Username already taken');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Network error');
+            });
+        }
+    };
+
     return (
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
             <View>
@@ -74,7 +100,7 @@ function SignUpScreen({navigation}: {navigation: any} ) {
                     />
                 </View>
                 <View style={[styles.buttonContainer, styles.centerContainer]}>
-                    <BackgroundButton onPress={() => navigation.navigate('Next Sign Up')} title="Next" isEnabled={isButtonEnabled}></BackgroundButton>
+                    <BackgroundButton onPress={handlePress} title="Next" isEnabled={isButtonEnabled}></BackgroundButton>
                 </View>
             </View>
         </TouchableWithoutFeedback>
