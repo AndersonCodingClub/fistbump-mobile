@@ -31,7 +31,7 @@ function SignUpScreen({navigation}: {navigation: any} ) {
 
     const handlePress = () => {
         if (isButtonEnabled) {
-            fetch('http://192.168.4.28:3000/validate-signup-credentials', {
+            fetch('http://10.9.150.219:3000/validate-signup-credentials', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ function SignUpScreen({navigation}: {navigation: any} ) {
             .then(response => response.json())
             .then(data => {
                 if (data.msg === 'SUCCESS') {
-                    navigation.navigate('Next Sign Up');
+                    navigation.navigate('Next Sign Up', {name: name, username: username, password: password});
                 } else {
                     alert('Username already taken');
                 }

@@ -4,6 +4,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
+type BackgroundButtonProps = {
+    onPress: () => void;
+    title: string;
+    buttonStyle: any;
+};
+
+const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle }) => (
+    <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
+      <Text style={styles.fistbumpButtonText}>{title}</Text>
+    </TouchableOpacity>
+);
+
 export default function HomePage({ navigation }: {navigation: any}) {
     const [fontsLoaded] = useFonts({
         'Roobert': require('../assets/Roobert-Regular.ttf'),
@@ -32,65 +44,6 @@ export default function HomePage({ navigation }: {navigation: any}) {
         });
     }, []);
 
-    const panResponder = useRef(
-        PanResponder.create({
-            onStartShouldSetPanResponder: () => true,
-            onMoveShouldSetPanResponder: () => true,
-            onPanResponderMove: (e, gestureState) => {
-                const newHeight = initialButtonHeight - gestureState.dy;
-                const newTranslateY = -gestureState.dy / 2;
-
-                if (newHeight > initialButtonHeight && newHeight <= screenHeight) {
-                    buttonHeight.setValue(newHeight);
-                    translateY.setValue(newTranslateY);
-                }
-            },
-            onPanResponderRelease: (e, gestureState) => {
-                const finalHeight = initialButtonHeight - gestureState.dy;
-                const thresholdHeight = screenHeight * 0.1;
-                const toValue = finalHeight >= thresholdHeight ? screenHeight : initialButtonHeight;
-                const resetTranslateY = toValue === screenHeight ? 100 : 0;
-
-                Animated.parallel([
-                    Animated.timing(buttonHeight, {
-                        toValue,
-                        duration: 500,
-                        useNativeDriver: false,
-                    }),
-                    Animated.timing(translateY, {
-                        toValue: resetTranslateY,
-                        duration: 500,
-                        useNativeDriver: true,
-                    })
-                ]).start(() => {
-                    setCurrentButtonHeight(toValue);
-                    setIsExpanded(finalHeight >= thresholdHeight);
-                });
-            },
-        })
-    ).current;
-
-    const animateButton = () => {
-        const finalHeight = isExpanded ? initialButtonHeight : screenHeight;
-        const textTranslateY = isExpanded ? 0 : 70;
-
-        Animated.parallel([
-            Animated.timing(buttonHeight, {
-                toValue: finalHeight,
-                duration: 500,
-                useNativeDriver: false
-            }),
-            Animated.timing(translateY, {
-                toValue: textTranslateY,
-                duration: 500,
-                useNativeDriver: true
-            }),
-        ]).start(() => {
-            setIsExpanded(!isExpanded);
-            setCurrentButtonHeight(finalHeight);
-        });
-    };
-
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -98,14 +51,8 @@ export default function HomePage({ navigation }: {navigation: any}) {
                     {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
                 </Text>
             </View>
-            <Animated.View style={[styles.fistbumpButton, { height: buttonHeight }]} {...panResponder.panHandlers}>
-                <TouchableOpacity style={styles.buttonContent} onPress={animateButton}>
-                    <Animated.Text style={[styles.fistbumpButtonText, { transform: [{ translateY }] }]}>
-                        Fistbump
-                    </Animated.Text>
-                </TouchableOpacity>
-            </Animated.View>
-        </View>
+            <BackgroundButton title={"Fistbump"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('CameraPage')}></BackgroundButton>
+            </View>
     );
 }
 
@@ -126,12 +73,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
 
-    fistbumpButtonContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 0
-    },
-
     fistbumpButton: {
         position: 'absolute',
         bottom: 0,
@@ -140,7 +81,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#BCB4F7',
         width: '100%',
         borderRadius: 25,
-        paddingTop: 25,
+        paddingTop: 35,
         paddingBottom: 50,
         justifyContent: 'flex-start'
     },

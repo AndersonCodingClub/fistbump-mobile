@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, KeyboardAvoidingView} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 
 type BackgroundButtonProps = {
@@ -29,7 +30,7 @@ const FirstDropdown = ({onRoleChange}: {onRoleChange: any}) => {
     ];
 
     return (
-        <RNPickerSelect
+        <RNPickerSelect 
             placeholder={placeholder}
             items={options}
             onValueChange={(value) => {
@@ -45,15 +46,27 @@ const SecondDropdown = ({onSecondRoleChange}: {onSecondRoleChange: any}) => {
     const [selectedValue, setSelectedValue] = useState(null);
 
     const placeholder = {
-      label: 'Select a major...',
+      label: 'Select a field...',
       value: null,
     };
   
     const options = [
-      { label: 'Computer Science', value: 'Computer Science' },
-      { label: 'Business', value: 'Business' },
-      { label: 'Economics', value: 'Economics' },
+      { label: 'Art', value: 'Art' },
       { label: 'Biology', value: 'Biology' },
+      { label: 'Business', value: 'Business' },
+      { label: 'Communication', value: 'Communication' },
+      { label: 'Computer Science', value: 'Computer Science' },
+      { label: 'Economics', value: 'Economics' },
+      { label: 'Education', value: 'Education' },
+      { label: 'Engineering', value: 'Engineering' },
+      { label: 'English', value: 'English' },
+      { label: 'Health', value: 'Health' },
+      { label: 'Language', value: 'Language' },
+      { label: 'Law', value: 'Law' },
+      { label: 'Law Enforcement', value: 'Law Enforcement' },
+      { label: 'Math', value: 'Math' },
+      { label: 'Physics', value: 'Physics' },
+      { label: 'Psychology', value: 'Psychology' }
     ];
   
     return (
@@ -69,7 +82,7 @@ const SecondDropdown = ({onSecondRoleChange}: {onSecondRoleChange: any}) => {
     );
 };
 
-const NextSignUpScreen = ({navigation}: {navigation: any}) => {
+const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) => {
     const [fontsLoaded] = useFonts({
         'Roobert': require('../assets/Roobert-Regular.ttf'),
         'Roobert-Bold': require('../assets/Roobert-Bold.otf'),
@@ -79,16 +92,51 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
     const [role, setRole] = useState(null);
     const[secondRole, setSecondRole] = useState(null);
     const isButtonEnabled = age.length > 0 && role !=null && secondRole !=null;
+    const { name, username, password } = route.params;
 
     const dismissKeyboard = () => {
       Keyboard.dismiss();
     };
 
-    const renderMajorDropdown = () => {
+    const handlePress = () => {
+      const major = secondRole === null ? role : secondRole
+
+      if (isButtonEnabled) {
+          fetch('http://10.9.150.219:3000/signup', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  name: name,
+                  username: username,
+                  password: password,
+                  age: age,
+                  major: major
+              }),
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.msg === 'SUCCESS') {
+                AsyncStorage.setItem('userID', data.userID.toString()).then(() => {
+                    navigation.navigate('Home');
+                });
+              } else {
+                  alert('Signup Failed');
+              }
+          })
+          .catch(error => {
+              console.error(error);
+              alert('Network error');
+          });
+      }
+    };
+
+    const renderFieldDropdown = () => {
         if (role === 'College') {
             return (
                 <View>
-                    <Text style={styles.inputLabel}>Major</Text>
+                    <Text style={styles.inputLabel}>Field</Text>
                     <View style={styles.input}>
                         <SecondDropdown onSecondRoleChange={setSecondRole}/>
                     </View>
@@ -100,9 +148,7 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
 
     return (
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
-          <KeyboardAvoidingView 
-            behavior={'padding'}
-            style={styles.container}>
+          <View style={styles.container}>
               <View style={[styles.subtextContainer, styles.centerContainer]}>
                   <Text style={styles.title}>Sign Up</Text>
               </View>
@@ -118,17 +164,16 @@ const NextSignUpScreen = ({navigation}: {navigation: any}) => {
                   />
               </View>
               <View style={{ marginLeft: 50 }}>
-                  <Text style={styles.inputLabel}>Education</Text>
-                  <View style={styles.input}>
+                  <Text style={[styles.inputLabel]}>Education</Text>
+                  <View style={[styles.dropDownButtonBase]}>
                       <FirstDropdown onRoleChange={setRole} />
-                  </View>
-                  {renderMajorDropdown()}
+                  </View> 
+                  {renderFieldDropdown()}
               </View>
               <View style={[styles.buttonContainer, styles.centerContainer]}>
-                <BackgroundButton onPress={() => navigation.navigate('Home')} title="Next" isEnabled={isButtonEnabled}></BackgroundButton>
+                <BackgroundButton onPress={handlePress} title="Sign Up" isEnabled={isButtonEnabled}></BackgroundButton>
             </View>
-          </KeyboardAvoidingView>
-         
+          </View>
         </TouchableWithoutFeedback>
     );
 };
@@ -158,7 +203,12 @@ const styles = StyleSheet.create({
   dropDownButtonBase: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100,
+    width: 300,
+    height: 60,
+    paddingLeft: 20,
+    paddingRight: 20,
+    backgroundColor: '#E6E6E6',
+
   },
 
   buttonText: {
@@ -178,7 +228,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50
+    marginBottom: 50,
   },
 
   inputLabel: {

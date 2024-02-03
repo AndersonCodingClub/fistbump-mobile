@@ -8,6 +8,7 @@ import LogInPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignupPage';
 import NextSignUpPage from './pages/NextSignupPage';
+import CameraPage from './pages/Camera';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,11 @@ export default function App() {
 			name="Home" 
 			component={HomePage} 
 			options={{ headerShown: false }}
+		/>
+		<Stack.Screen 
+			name="CameraPage" 
+			component={CameraPage} 
+			options={{ headerShown: false, animation: 'slide_from_bottom' }}
 		/>
 		<Stack.Screen 
 			name="Log In"
