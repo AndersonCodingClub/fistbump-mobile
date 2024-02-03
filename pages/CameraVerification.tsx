@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
-import { Camera, CameraType } from 'expo-camera';
+import { useRoute } from "@react-navigation/native"
+
 
 type BackgroundButtonProps = {
     onPress: () => void;
@@ -16,49 +16,48 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, but
     </TouchableOpacity>
 );
 
+const CameraVerification = ({ route, navigation }: {navigation: any, route: any}) => {
+    const {pic, userID} = route.params;
 
-const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
-    const [permission, requestPermission] = Camera.useCameraPermissions();
-    const cameraRef = useRef<Camera | null>(null);
-    const {userID} = route.params;
+    const acceptImage = () => {
+        fetch('http://10.9.150.219:3000/save-image', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                imageData: pic.base64,
+                userID: userID
+            }),
+        })
+        .then(data => {
+            navigation.navigate('Home');
+        })
+        .catch(error => {
+            console.error(error);
+            alert('Network error');
+        });
+    };
 
-    if (!permission) {
-        requestPermission();
-    }
-
-    const takePicture = async () => {
-        if (cameraRef) {
-          const photo = await cameraRef.current!.takePictureAsync({base64: true});
-          navigation.navigate('CameraVerification', {pic: photo, userID: userID})
-        }
-      };
-
-    return (
-        <Camera ref={(ref) => {if (ref) {cameraRef.current = ref;}}} style={styles.container} type={CameraType.front}>
+    return(
+        <ImageBackground style={styles.image} source={{uri: `data:image/jpeg;base64,${pic.base64}`}}>
             <View style={styles.fistbumpButton}>
                 <BackgroundButton title={"Fistbump"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('Home')}></BackgroundButton>
             </View>
-            <View style={styles.captureButtonContainer}>
-                <TouchableOpacity onPress={takePicture} style={styles.captureButton}>
 
-                </TouchableOpacity>
-            </View>            
-        </Camera>
+            <View style={styles.acceptButtonContainer}>
+                <BackgroundButton title={"👍"} buttonStyle={styles.acceptButton} onPress={acceptImage}/>
+            </View>    
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#E3E3E3',
-        alignItems: 'center'
-    },
-
-    titleText: {
+    buttonText: {
         fontFamily: 'Roobert-Bold',
         color: '#372F35',
-        fontSize: 45,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 35
     },
 
     fistbumpButtonContainer: {
@@ -81,11 +80,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
 
-    buttonContent: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-
     fistbumpButtonText: {
         fontFamily: 'Roobert-Bold',
         color: '#372F35',
@@ -93,7 +87,13 @@ const styles = StyleSheet.create({
         fontSize: 35
     },
 
-    captureButtonContainer: {
+    image: {
+        flex: 1,
+        alignItems: 'center'
+    },
+
+    acceptButtonContainer: {
+        flexDirection: 'row',
         position: 'absolute',
         height: 250,
         paddingBottom: 100,
@@ -102,14 +102,13 @@ const styles = StyleSheet.create({
         alignContent: 'center',
     },
 
-    captureButton: {
+    acceptButton: {
         borderRadius: 200,
         height: 90,
         width: 90,
-        borderColor: 'white',
-        borderWidth: 7,
-        opacity: 1
+        backgroundColor: '#69e041',
+        justifyContent: 'center'
     }
 });
 
-export default CameraPage;
+export default CameraVerification;

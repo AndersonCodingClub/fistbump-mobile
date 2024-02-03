@@ -66,7 +66,7 @@ function LogInScreen({navigation}: {navigation: any}) {
                 </View>
                 <View style={{marginTop: 60, marginLeft: 50}}>
                     <Text style={styles.inputLabel}>
-                        Username or Email
+                        Username
                     </Text>
                     <TextInput
                         style={styles.input}

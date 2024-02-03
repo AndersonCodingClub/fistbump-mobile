@@ -13,7 +13,6 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isE
         <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
 );
-
 function SignUpScreen({navigation}: {navigation: any} ) {
     const [fontsLoaded] = useFonts({
         'Roobert': require('../assets/Roobert-Regular.ttf'),

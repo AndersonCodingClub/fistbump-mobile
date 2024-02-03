@@ -27,12 +27,6 @@ export default function HomePage({ navigation }: {navigation: any}) {
     }
 
     const [userID, setUserID] = useState<string | null>(null);
-    const [isExpanded, setIsExpanded] = useState(false);
-    const screenHeight = Dimensions.get('window').height;
-    const initialButtonHeight = 115;
-    const [currentButtonHeight, setCurrentButtonHeight] = useState(initialButtonHeight);
-    const buttonHeight = useRef(new Animated.Value(initialButtonHeight)).current;
-    const translateY = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         AsyncStorage.getItem('userID').then(retrievedUserID => {
@@ -51,7 +45,7 @@ export default function HomePage({ navigation }: {navigation: any}) {
                     {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
                 </Text>
             </View>
-            <BackgroundButton title={"Fistbump"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('CameraPage')}></BackgroundButton>
+            <BackgroundButton title={"Fistbump"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('CameraPage', {userID: userID})}></BackgroundButton>
             </View>
     );
 }
@@ -95,6 +89,19 @@ const styles = StyleSheet.create({
         fontFamily: 'Roobert-Bold',
         color: '#372F35',
         textAlign: 'center',
-        fontSize: 35
+        fontSize: 35,
+        flex: 1
+    },
+    fistbumpButtonSubText: {
+        fontFamily: 'Roobert-Bold',
+        color: '#372F35',
+        textAlign: 'center',
+        fontSize: 25,
+        flex: 1
+    },
+
+    fistbumpButtonStreak: {
+        flex: 1,
+        paddingRight: 20
     }
 });

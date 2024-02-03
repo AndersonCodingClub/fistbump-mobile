@@ -147,34 +147,34 @@ const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) =>
     };
 
     return (
-        <TouchableWithoutFeedback onPress={dismissKeyboard}>
-          <View style={styles.container}>
-              <View style={[styles.subtextContainer, styles.centerContainer]}>
-                  <Text style={styles.title}>Sign Up</Text>
-              </View>
-              <View style={{ marginLeft: 50, marginTop: 30 }}>
-                  <Text style={styles.inputLabel}>Age</Text>
-                  <TextInput
-                      style={styles.input}
-                      value={age}
-                      onChangeText={setAge}
-                      autoCapitalize={'none'}
-                      autoCorrect={false}
-                      keyboardType="number-pad"
-                  />
-              </View>
-              <View style={{ marginLeft: 50 }}>
-                  <Text style={[styles.inputLabel]}>Education</Text>
-                  <View style={[styles.dropDownButtonBase]}>
-                      <FirstDropdown onRoleChange={setRole} />
-                  </View> 
-                  {renderFieldDropdown()}
-              </View>
-              <View style={[styles.buttonContainer, styles.centerContainer]}>
-                <BackgroundButton onPress={handlePress} title="Sign Up" isEnabled={isButtonEnabled}></BackgroundButton>
+      <TouchableWithoutFeedback onPress={dismissKeyboard} hitSlop={{left:50, right:50, top:50, bottom:50}}>
+        <View style={styles.container}>
+            <View style={[styles.subtextContainer, styles.centerContainer]}>
+                <Text style={styles.title}>Sign Up</Text>
             </View>
-          </View>
-        </TouchableWithoutFeedback>
+                <View style={{ marginLeft: 50, marginTop: 30 }}>
+                    <Text style={styles.inputLabel}>Age</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={age}
+                        onChangeText={setAge}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        keyboardType="number-pad"
+                    />
+                </View>
+                <View style={{ marginLeft: 50 }}>
+                    <Text style={[styles.inputLabel]}>Education</Text>
+                    <View style={[styles.dropDownButtonBase]} hitSlop={{left:50, right:50, top:50, bottom:50}}>
+                        <FirstDropdown onRoleChange={setRole} />
+                    </View> 
+                    {renderFieldDropdown()}
+                </View>
+                <View style={[styles.buttonContainer, styles.centerContainer]}>
+                  <BackgroundButton onPress={handlePress} title="Sign Up" isEnabled={isButtonEnabled}></BackgroundButton>
+                </View>
+        </View>
+      </TouchableWithoutFeedback>
     );
 };
 
@@ -208,7 +208,13 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     backgroundColor: '#E6E6E6',
-
+    marginBottom: 50
+  },
+  dropDownButtonBaseInvisible: {
+    width: 400,
+    height: 120,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
   buttonText: {
