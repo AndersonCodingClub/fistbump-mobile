@@ -7,12 +7,14 @@ import { useFonts } from 'expo-font';
 type BackgroundButtonProps = {
     onPress: () => void;
     title: string;
+    subtext: string;
     buttonStyle: any;
 };
 
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle }) => (
+const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle, subtext }) => (
     <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
       <Text style={styles.fistbumpButtonText}>{title}</Text>
+      <Text style={styles.fistbumpButtonSubText}>{subtext}</Text>
     </TouchableOpacity>
 );
 
@@ -45,7 +47,7 @@ export default function HomePage({ navigation }: {navigation: any}) {
                     {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
                 </Text>
             </View>
-            <BackgroundButton title={"Fistbump"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('CameraPage', {userID: userID})}></BackgroundButton>
+            <BackgroundButton title={"Daily Fistbump:"} subtext={"Greg Shatsman"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('CameraPage', {userID: userID})}></BackgroundButton>
             </View>
     );
 }
@@ -96,12 +98,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Roobert-Bold',
         color: '#372F35',
         textAlign: 'center',
-        fontSize: 25,
+        fontSize: 20,
+        marginTop: 10,
         flex: 1
     },
 
-    fistbumpButtonStreak: {
+    fistbumpButtonStreakText: {
         flex: 1,
-        paddingRight: 20
+        paddingRight: 20,
+        height: 40,
+        width: 40,
     }
 });

@@ -40,14 +40,15 @@ const CameraVerification = ({ route, navigation }: {navigation: any, route: any}
     };
 
     return(
-        <ImageBackground style={styles.image} source={{uri: `data:image/jpeg;base64,${pic.base64}`}}>
+        <ImageBackground style={[styles.image, styles.reverse]} source={{uri: `data:image/jpeg;base64,${pic.base64}`}}>
             <View style={styles.fistbumpButton}>
-                <BackgroundButton title={"Fistbump"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('Home')}></BackgroundButton>
+                <BackgroundButton title={"Fistbump"} buttonStyle={[styles.fistbumpButton, styles.reverse]} onPress={() => console.log('button!')}></BackgroundButton>
             </View>
 
             <View style={styles.acceptButtonContainer}>
-                <BackgroundButton title={"👍"} buttonStyle={styles.acceptButton} onPress={acceptImage}/>
-            </View>    
+                <BackgroundButton title={"👍"} buttonStyle={[styles.acceptButton, styles.reverse]} onPress={acceptImage}/>
+                <BackgroundButton title={"🗑️"} buttonStyle={[styles.declineButton, styles.reverse]} onPress={() => navigation.pop()}/>
+            </View>
         </ImageBackground>
     );
 }
@@ -58,6 +59,10 @@ const styles = StyleSheet.create({
         color: '#372F35',
         textAlign: 'center',
         fontSize: 35
+    },
+
+    reverse: {
+        transform: [{ scaleX: -1 }]
     },
 
     fistbumpButtonContainer: {
@@ -89,13 +94,13 @@ const styles = StyleSheet.create({
 
     image: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
     },
 
     acceptButtonContainer: {
         flexDirection: 'row',
         position: 'absolute',
-        height: 250,
+        height: 150,
         paddingBottom: 100,
         bottom: 0,
         justifyContent: 'center',
@@ -103,10 +108,20 @@ const styles = StyleSheet.create({
     },
 
     acceptButton: {
-        borderRadius: 200,
-        height: 90,
+        borderRadius: 5,
+        marginRight: 50,
+        height: 80,
         width: 90,
-        backgroundColor: '#69e041',
+        backgroundColor: '#51c45e',
+        justifyContent: 'center'
+    },
+
+    declineButton: {
+        borderRadius: 5,
+        height: 80,
+        marginLeft: 50,
+        width: 90,
+        backgroundColor: '#c45151',
         justifyContent: 'center'
     }
 });

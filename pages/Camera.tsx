@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
@@ -7,12 +7,22 @@ import { Camera, CameraType } from 'expo-camera';
 type BackgroundButtonProps = {
     onPress: () => void;
     title: string;
+    subtext: string;
     buttonStyle: any;
+    streak: number;
 };
 
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle }) => (
+const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, subtext, buttonStyle, streak}) => (
     <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
-      <Text style={styles.fistbumpButtonText}>{title}</Text>
+      <View style={styles.fistbumpButtonTextContainer}>
+        <Text style={styles.fistbumpButtonText}>{title}</Text>
+        <Text style={styles.fistbumpButtonSubText}>{subtext}</Text>
+      </View>
+      <View style={styles.fistbumpButtonTextContainer}>
+        <Image style={styles.fistbumpButtonStreakIcon} source={require('../assets/fire.png')} />
+        <Text style={styles.fistbumpButtonStreakNumber}>{streak}</Text>
+      </View>
+
     </TouchableOpacity>
 );
 
@@ -36,7 +46,7 @@ const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     return (
         <Camera ref={(ref) => {if (ref) {cameraRef.current = ref;}}} style={styles.container} type={CameraType.front}>
             <View style={styles.fistbumpButton}>
-                <BackgroundButton title={"Fistbump"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('Home')}></BackgroundButton>
+                <BackgroundButton title={"Daily Fistbump:"} subtext={"Greg Shatsman"} streak={0} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('Home')}></BackgroundButton>
             </View>
             <View style={styles.captureButtonContainer}>
                 <TouchableOpacity onPress={takePicture} style={styles.captureButton}>
@@ -64,7 +74,7 @@ const styles = StyleSheet.create({
     fistbumpButtonContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-        marginBottom: 0
+        marginBottom: 0,
     },
 
     fistbumpButton: {
@@ -90,7 +100,17 @@ const styles = StyleSheet.create({
         fontFamily: 'Roobert-Bold',
         color: '#372F35',
         textAlign: 'center',
-        fontSize: 35
+        fontSize: 35,
+        flex: 3
+    },
+
+    fistbumpButtonSubText: {
+        fontFamily: 'Roobert-Bold',
+        color: '#372F35',
+        textAlign: 'center',
+        fontSize: 20,
+        marginTop: 10,
+        flex: 3,
     },
 
     captureButtonContainer: {
@@ -109,7 +129,25 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderWidth: 7,
         opacity: 1
+    },
+
+    fistbumpButtonStreakIcon: {
+        flex: 1,
+        paddingLeft: 20,
+        height: 20,
+        width: 20,
+        
+    },
+    fistbumpButtonStreakNumber: {
+        flex: 1,
+        paddingLeft: 20,
+    
+    },
+
+    fistbumpButtonTextContainer: {
+        flexDirection: 'column'
     }
+
 });
 
 export default CameraPage;

@@ -10,7 +10,7 @@ type BackgroundButtonProps = {
 };
 
 const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isEnabled }) => (
-    <TouchableOpacity onPress={onPress} disabled={!isEnabled} style={[styles.authButtonBase, { backgroundColor: isEnabled ? '#FFE033' : 'lightgray' }]}>
+    <TouchableOpacity onPress={onPress} disabled={!isEnabled} style={[styles.authButtonBase, { backgroundColor: isEnabled ? '#FFE450' : 'lightgray' }]}>
         <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
 );

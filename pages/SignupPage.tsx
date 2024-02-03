@@ -29,7 +29,11 @@ function SignUpScreen({navigation}: {navigation: any} ) {
     };
 
     const handlePress = () => {
-        if (isButtonEnabled) {
+        if (username.length < 4) {
+            alert('Username has to be at least 4 characters long')
+        }
+
+        else if (isButtonEnabled) {
             fetch('http://10.9.150.219:3000/validate-signup-credentials', {
                 method: 'POST',
                 headers: {
