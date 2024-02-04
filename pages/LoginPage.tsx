@@ -2,18 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, TouchableWithoutFe
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import React from 'react';
-
-type BackgroundButtonProps = {
-    onPress: () => void;
-    title: string;
-    isEnabled: boolean;
-};
-
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isEnabled }) => (
-    <TouchableOpacity onPress={onPress} disabled={!isEnabled} style={[styles.authButtonBase, { backgroundColor: isEnabled ? '#FFE450' : 'lightgray' }]}>
-        <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-);
+import BackgroundButton from '../components/BackgroundButton';
 
 function LogInScreen({navigation}: {navigation: any}) {
     const [fontsLoaded] = useFonts({
@@ -52,7 +41,7 @@ function LogInScreen({navigation}: {navigation: any}) {
                 }
             })
             .catch(error => {
-                console.error(error);
+                console.error(error, );
                 alert('Network error');
             });
         }
@@ -96,6 +85,7 @@ function LogInScreen({navigation}: {navigation: any}) {
                         onPress={handlePress}
                         title="Log In" 
                         isEnabled={isButtonEnabled}
+                        style={[styles.authButtonBase, { backgroundColor: isButtonEnabled ? '#FFE450' : 'lightgray' }]}
                     />
                 </View>
             </View>

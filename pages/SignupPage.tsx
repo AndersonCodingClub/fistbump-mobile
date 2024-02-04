@@ -1,18 +1,8 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useFonts } from 'expo-font';
 import React from 'react';
+import BackgroundButton from '../components/BackgroundButton';
 
-type BackgroundButtonProps = {
-    onPress: () => void;
-    title: string;
-    isEnabled: boolean;
-};
-
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isEnabled }) => (
-    <TouchableOpacity onPress={onPress} disabled={!isEnabled} style={[styles.authButtonBase, { backgroundColor: isEnabled ? '#F9724D' : 'lightgray' }]}>
-        <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-);
 function SignUpScreen({navigation}: {navigation: any} ) {
     const [fontsLoaded] = useFonts({
         'Roobert': require('../assets/Roobert-Regular.ttf'),
@@ -103,7 +93,7 @@ function SignUpScreen({navigation}: {navigation: any} ) {
                     />
                 </View>
                 <View style={[styles.buttonContainer, styles.centerContainer]}>
-                    <BackgroundButton onPress={handlePress} title="Next" isEnabled={isButtonEnabled}></BackgroundButton>
+                    <BackgroundButton onPress={handlePress} title="Next" isEnabled={isButtonEnabled} style={[styles.authButtonBase, { backgroundColor: isButtonEnabled ? '#F9724D' : 'lightgray' }]}></BackgroundButton>
                 </View>
             </View>
         </TouchableWithoutFeedback>

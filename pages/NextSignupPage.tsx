@@ -3,18 +3,8 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFe
 import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
+import BackgroundButton from '../components/BackgroundButton';
 
-type BackgroundButtonProps = {
-  onPress: () => void;
-  title: string;
-  isEnabled: boolean;
-};
-
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, isEnabled }) => (
-    <TouchableOpacity onPress={onPress} disabled={!isEnabled} style={[styles.authButtonBase, { backgroundColor: isEnabled ? '#F9724D' : 'lightgray' }]}>
-        <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-);
 
 const FirstDropdown = ({onRoleChange}: {onRoleChange: any}) => {
     const [selectedValue, setSelectedValue] = useState(null);
@@ -171,7 +161,7 @@ const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) =>
                     {renderFieldDropdown()}
                 </View>
                 <View style={[styles.buttonContainer, styles.centerContainer]}>
-                  <BackgroundButton onPress={handlePress} title="Sign Up" isEnabled={isButtonEnabled}></BackgroundButton>
+                  <BackgroundButton onPress={handlePress} title="Sign Up" isEnabled={isButtonEnabled} style={[styles.authButtonBase, { backgroundColor: isButtonEnabled ? '#F9724D' : 'lightgray' }]}></BackgroundButton>
                 </View>
         </View>
       </TouchableWithoutFeedback>

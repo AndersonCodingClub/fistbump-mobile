@@ -91,11 +91,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
 
-    buttonContent: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-
     fistbumpButtonText: {
         fontFamily: 'Roobert-Bold',
         color: '#372F35',

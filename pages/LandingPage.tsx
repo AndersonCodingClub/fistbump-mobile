@@ -1,18 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
-
-type BackgroundButtonProps = {
-  onPress: () => void;
-  title: string;
-  additionalBackground: string;
-};
-
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, additionalBackground }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.authButtonBase, { backgroundColor: additionalBackground }]}>
-    <Text style={styles.buttonText}>{title}</Text>
-  </TouchableOpacity>
-);
+import BackgroundButton from '../components/BackgroundButton';
 
 const LandingPage = ({navigation}: {navigation: any}) => {
     const [fontsLoaded] = useFonts({
@@ -33,8 +22,8 @@ const LandingPage = ({navigation}: {navigation: any}) => {
                 <Text style={styles.sloganText}>Connect in the real world.</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <BackgroundButton onPress={() => navigation.navigate('Log In')} title="Log In" additionalBackground='#FFE450'></BackgroundButton>
-                <BackgroundButton onPress={() => navigation.navigate('Sign Up')} title="Sign Up" additionalBackground='#F9724D'></BackgroundButton>
+                <BackgroundButton onPress={() => navigation.navigate('Log In')} title="Log In" style={[styles.authButtonBase, {backgroundColor: '#FFE450'}]}></BackgroundButton>
+                <BackgroundButton onPress={() => navigation.navigate('Sign Up')} title="Sign Up" style={[styles.authButtonBase, {backgroundColor: '#F9724D'}]}></BackgroundButton>
             </View>
         </View>
     );
@@ -86,13 +75,6 @@ const styles = StyleSheet.create({
         paddingRight: 110,
         borderRadius: 5
     },
-
-    buttonText: {
-        fontSize: 25,
-        fontFamily: 'Roobert-Bold',
-        textAlign: 'center',
-        color: '#372F35'
-    }
 });
 
 export default LandingPage;
