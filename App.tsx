@@ -10,6 +10,7 @@ import SignUpPage from './pages/SignupPage';
 import NextSignUpPage from './pages/NextSignupPage';
 import CameraPage from './pages/Camera';
 import CameraVerification from './pages/CameraVerification';
+import Profile from './pages/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,12 +42,12 @@ export default function App() {
 		<Stack.Screen 
 			name="CameraPage" 
 			component={CameraPage} 
-			options={{ headerShown: false, animation: 'slide_from_bottom' }}
+			options={{ headerShown: false, animation: 'slide_from_bottom', gestureEnabled: false}}
 		/>
 		<Stack.Screen 
 			name="CameraVerification" 
 			component={CameraVerification} 
-			options={{ headerShown: false, animation: 'none' }}
+			options={{ headerShown: false, animation: 'none', gestureEnabled: false }}
 		/>
 		<Stack.Screen 
 			name="Log In"
@@ -61,6 +62,11 @@ export default function App() {
 		<Stack.Screen 
 			name="Next Sign Up" 
 			component={NextSignUpPage} 
+			options={{ headerShown: true,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "Back" }}
+		/>
+		<Stack.Screen
+			name="Profile"
+			component={Profile}
 			options={{ headerShown: true,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "Back" }}
 		/>
 		</Stack.Navigator>

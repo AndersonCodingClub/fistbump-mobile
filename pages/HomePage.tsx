@@ -3,11 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, PanResp
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import Bumper from '../components/Bumper';
 
 type BackgroundButtonProps = {
     onPress: () => void;
     title: string;
-    subtext: string;
+    subtext: string; 
     buttonStyle: any;
 };
 
@@ -47,7 +48,7 @@ export default function HomePage({ navigation }: {navigation: any}) {
                     {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
                 </Text>
             </View>
-            <BackgroundButton title={"Daily Fistbump:"} subtext={"Greg Shatsman"} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('CameraPage', {userID: userID})}></BackgroundButton>
+            <Bumper location={'bottom'} title={''} onPress={() => navigation.navigate("CameraPage")}/>
             </View>
     );
 }

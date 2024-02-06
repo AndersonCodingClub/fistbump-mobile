@@ -2,6 +2,8 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import { useRoute } from "@react-navigation/native"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
 
 
 type BackgroundButtonProps = {
@@ -17,10 +19,16 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, but
 );
 
 const CameraVerification = ({ route, navigation }: {navigation: any, route: any}) => {
-    const {pic, userID} = route.params;
+    const { pic } = route.params;
+
+    const [userID, setUserID] = useState<string | null>(null);
+
+    AsyncStorage.getItem('userID').then(retrievedUserID => {
+        setUserID(retrievedUserID);
+    });
 
     const acceptImage = () => {
-        fetch('http://10.9.150.219:3000/save-image', {
+        fetch('http://10.9.157.120:3000/save-image', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

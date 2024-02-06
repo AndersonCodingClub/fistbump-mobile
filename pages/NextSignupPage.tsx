@@ -4,6 +4,8 @@ import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import BackgroundButton from '../components/BackgroundButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 
 const FirstDropdown = ({onRoleChange}: {onRoleChange: any}) => {
@@ -81,7 +83,7 @@ const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) =>
     const [age, setAge] = useState('');
     const [role, setRole] = useState(null);
     const[secondRole, setSecondRole] = useState(null);
-    const isButtonEnabled = age.length > 0 && role !=null && secondRole !=null;
+    const isButtonEnabled = age.length > 0 && (secondRole !== null || role === 'High School');
     const { name, username, password } = route.params;
 
     const dismissKeyboard = () => {
@@ -90,53 +92,63 @@ const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) =>
 
     const handlePress = () => {
       const major = secondRole === null ? role : secondRole
-
-      if (isButtonEnabled) {
-          fetch('http://10.9.150.219:3000/signup', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  name: name,
-                  username: username,
-                  password: password,
-                  age: age,
-                  major: major
-              }),
-          })
-          .then(response => response.json())
-          .then(data => {
-              if (data.msg === 'SUCCESS') {
-                AsyncStorage.setItem('userID', data.userID.toString()).then(() => {
-                    navigation.navigate('Home');
-                });
-              } else {
-                  alert('Signup Failed');
-              }
-          })
-          .catch(error => {
-              console.error(error);
-              alert('Network error');
-          });
-      }
-    };
-
-    const renderFieldDropdown = () => {
-        if (role === 'College') {
-            return (
-                <View>
-                    <Text style={styles.inputLabel}>Field</Text>
-                    <View style={styles.input}>
-                        <SecondDropdown onSecondRoleChange={setSecondRole}/>
-                    </View>
-                </View>
-            );
+    
+        if (parseInt(age) < 13) {
+            alert('You must be over 13 to use Fistbump')
+        } else if (parseInt(age) > 100) {
+            alert('Unfortunately, you are too old')
         }
-        return null;
+      
+        else if (isButtonEnabled) {
+            fetch('http://10.9.157.120:3000/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    username: username,
+                    password: password,
+                    age: age,
+                    major: major
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.msg === 'SUCCESS') {
+                  AsyncStorage.setItem('userID', data.userID.toString()).then(() => {
+                      navigation.navigate('Home');
+                  });
+                } else {
+                    alert('Signup Failed');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Network error');
+            });
+        }
+      };
+
+      const renderFieldDropdown = () => {
+          if (role === 'College') {
+              return (
+                  <View>
+                      <Text style={styles.inputLabel}>Field</Text>
+                      <View style={styles.input}>
+                          <SecondDropdown onSecondRoleChange={setSecondRole}/>
+                      </View>
+                  </View>
+              );
+          }
+          return null;
     };
 
     return (
+      <KeyboardAwareScrollView  keyboardShouldPersistTaps={'always'}
+        style={{flex:1}}
+        showsVerticalScrollIndicator={false}>
+        {
       <TouchableWithoutFeedback onPress={dismissKeyboard} hitSlop={{left:50, right:50, top:50, bottom:50}}>
         <View style={styles.container}>
             <View style={[styles.subtextContainer, styles.centerContainer]}>
@@ -165,6 +177,8 @@ const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) =>
                 </View>
         </View>
       </TouchableWithoutFeedback>
+    }
+  </KeyboardAwareScrollView>
     );
 };
 

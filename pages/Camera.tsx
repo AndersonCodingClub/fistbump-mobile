@@ -30,7 +30,6 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, sub
 const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const cameraRef = useRef<Camera | null>(null);
-    const {userID} = route.params;
 
     if (!permission) {
         requestPermission();
@@ -39,7 +38,7 @@ const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     const takePicture = async () => {
         if (cameraRef) {
           const photo = await cameraRef.current!.takePictureAsync({base64: true});
-          navigation.navigate('CameraVerification', {pic: photo, userID: userID})
+          navigation.navigate('CameraVerification', {pic: photo})
         }
       };
 

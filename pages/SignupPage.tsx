@@ -2,6 +2,8 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFe
 import { useFonts } from 'expo-font';
 import React from 'react';
 import BackgroundButton from '../components/BackgroundButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 function SignUpScreen({navigation}: {navigation: any} ) {
     const [fontsLoaded] = useFonts({
@@ -21,10 +23,14 @@ function SignUpScreen({navigation}: {navigation: any} ) {
     const handlePress = () => {
         if (username.length < 4) {
             alert('Username has to be at least 4 characters long')
+        } else if (username.length > 15) {
+            alert("Username can't be more than 15 characters long")
+        } else if (name.length > 30) {
+            alert("Names can't be longer than 30 characters")
         }
 
         else if (isButtonEnabled) {
-            fetch('http://10.9.150.219:3000/validate-signup-credentials', {
+            fetch('http://10.9.157.120:3000/validate-signup-credentials', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,6 +55,11 @@ function SignUpScreen({navigation}: {navigation: any} ) {
     };
 
     return (
+        <KeyboardAwareScrollView  keyboardShouldPersistTaps={'always'}
+        style={{flex:1}}
+        showsVerticalScrollIndicator={false}>
+        {
+
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
             <View>
                 <View style={[styles.subtextContainer, styles.centerContainer]}>
@@ -97,6 +108,8 @@ function SignUpScreen({navigation}: {navigation: any} ) {
                 </View>
             </View>
         </TouchableWithoutFeedback>
+    }
+    </KeyboardAwareScrollView>
     );
 }
 
