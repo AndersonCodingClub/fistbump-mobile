@@ -28,7 +28,7 @@ const CameraVerification = ({ route, navigation }: {navigation: any, route: any}
     });
 
     const acceptImage = () => {
-        fetch('http://10.9.157.120:3000/save-image', {
+        fetch('http://192.168.4.28:3000/save-image', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

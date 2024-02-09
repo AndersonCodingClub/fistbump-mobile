@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import { useIsFocused } from '@react-navigation/native';
+
 import Bumper from '../components/Bumper';
 
 type BackgroundButtonProps = {
@@ -12,27 +14,27 @@ type BackgroundButtonProps = {
     buttonStyle: any;
 };
 
-function getImageUrls() {
-    const baseUrl = 'http://10.9.157.120:3000/serve/';
-
-    fetch('http://10.9.157.120:3000/get-images', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
+async function getImageUrls() {
+    const baseUrl = 'http://192.168.4.28:3000/serve/';
+    try {
+        const response = await fetch('http://192.168.4.28:3000/get-images', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
         if (data.msg === 'SUCCESS' && Array.isArray(data.image_paths)) {
             const imageUrls = data.image_paths.map(path => baseUrl + path);
             console.log('Full Image URLs:', imageUrls);
-
+            return imageUrls;
         }
-    })
-    .catch(error => {
+        return [];
+    } catch (error) {
         console.error(error);
         alert('Network error');
-    });
+        return [];
+    }
 }
 
 const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle, subtext}) => (
@@ -43,6 +45,8 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, but
 );
 
 export default function HomePage({ navigation }: {navigation: any}) {
+    const isFocused = useIsFocused();
+
     const [fontsLoaded] = useFonts({
         'Roobert': require('../assets/Roobert-Regular.ttf'),
         'Roobert-Bold': require('../assets/Roobert-Bold.otf')
@@ -53,6 +57,7 @@ export default function HomePage({ navigation }: {navigation: any}) {
     }
 
     const [userID, setUserID] = useState<string | null>(null);
+    const [imageUrls, setImageUrls] = useState<string[]>([]);
 
     useEffect(() => {
         AsyncStorage.getItem('userID').then(retrievedUserID => {
@@ -64,21 +69,28 @@ export default function HomePage({ navigation }: {navigation: any}) {
         });
     }, []);
 
+    useEffect(() => {
+        if (isFocused) {
+            getImageUrls().then(urls => setImageUrls(urls));
+        }
+    }, [isFocused]);
+
     return (
         <View style={styles.container}>
-            <View style={styles.titleContainer}>
-                <View style={styles.buttonContainer}>
-                    <BackgroundButton onPress={() => navigation.navigate('Profile')} title="Profile" buttonStyle={[styles.authButtonBase, {backgroundColor: '#FFE450'}]} subtext="Profile"></BackgroundButton>
-                </View>
-            </View>
             <View style={styles.titleContainer}>
                 <Text style={styles.titleText}>
                     {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
                 </Text>
             </View>
-            <BackgroundButton onPress={() => alert(getImageUrls())} title="Test" buttonStyle={[styles.authButtonBase, {backgroundColor: '#F9724D'}]} subtext="Profile"></BackgroundButton>
+            <ScrollView style={styles.galleryContainer} contentContainerStyle={styles.galleryContentContainer}>
+                {imageUrls.map((url, index) => (
+                    <View key={index} style={styles.galleryImageBoundingBox}>
+                        <ImageBackground source={{ uri: url }} style={styles.galleryBackgroundImage} />
+                    </View>
+                ))}
+            </ScrollView>
             <Bumper location={'bottom'} title={''} onPress={() => navigation.navigate("CameraPage")}/>
-            </View>
+        </View>
     );
 }
 
@@ -124,6 +136,7 @@ const styles = StyleSheet.create({
         fontSize: 35,
         flex: 1
     },
+
     fistbumpButtonSubText: {
         fontFamily: 'Roobert-Bold',
         color: '#372F35',
@@ -156,4 +169,30 @@ const styles = StyleSheet.create({
         paddingRight: 30,
         borderRadius: 5
     },
+
+    galleryContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        marginTop: 20,
+        overflow: 'scroll'
+    },
+
+    galleryContentContainer: {
+        alignItems: 'center',
+        paddingBottom: 150
+    },
+
+    galleryImageBoundingBox: {
+        width: '95%',
+        height: 300,
+        backgroundColor: '#372F35',
+        borderRadius: 25,
+        marginBottom: 10,
+        overflow: 'hidden'
+    },
+
+    galleryBackgroundImage: {
+        width: '100%',
+        height: '100%'
+    }
 });

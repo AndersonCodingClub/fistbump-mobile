@@ -100,7 +100,7 @@ const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) =>
         }
       
         else if (isButtonEnabled) {
-            fetch('http://10.9.157.120:3000/signup', {
+            fetch('http://192.168.4.28:3000/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ function LogInScreen({navigation}: {navigation: any}) {
 
     const handlePress = () => {
         if (isButtonEnabled) {
-            fetch('http://10.9.157.120:3000/login', {
+            fetch('http://192.168.4.28:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
