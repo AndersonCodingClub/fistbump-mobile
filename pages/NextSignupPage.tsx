@@ -117,7 +117,7 @@ const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) =>
             .then(data => {
                 if (data.msg === 'SUCCESS') {
                   AsyncStorage.setItem('userID', data.userID.toString()).then(() => {
-                      navigation.navigate('Home');
+                      navigation.navigate('Home', {username: username});
                   });
                 } else {
                     alert('Signup Failed');

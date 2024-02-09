@@ -25,7 +25,7 @@ async function getImageUrls() {
         });
         const data = await response.json();
         if (data.msg === 'SUCCESS' && Array.isArray(data.image_paths)) {
-            const imageUrls = data.image_paths.map(path => baseUrl + path);
+            const imageUrls = data.image_paths.map((path: string) => baseUrl + path);
             console.log('Full Image URLs:', imageUrls);
             return imageUrls;
         }
@@ -44,7 +44,7 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, but
     </TouchableOpacity>
 );
 
-export default function HomePage({ navigation }: {navigation: any}) {
+export default function HomePage({route, navigation}: {route: any, navigation: any}) {
     const isFocused = useIsFocused();
 
     const [fontsLoaded] = useFonts({
@@ -75,11 +75,13 @@ export default function HomePage({ navigation }: {navigation: any}) {
         }
     }, [isFocused]);
 
+    const { username } = route.params;
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.titleText}>
-                    {userID ? `You've been logged in as ${userID}` : "You've been logged In"}
+                    {`Welcome Back ${username}!`}
                 </Text>
             </View>
             <ScrollView style={styles.galleryContainer} contentContainerStyle={styles.galleryContentContainer}>
