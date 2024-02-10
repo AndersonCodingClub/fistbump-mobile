@@ -77,6 +77,10 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
 
     const { username } = route.params;
 
+    const openImage = (url: string) => {
+        console.log("Clicked image URL:", url);
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -86,9 +90,9 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
             </View>
             <ScrollView style={styles.galleryContainer} contentContainerStyle={styles.galleryContentContainer}>
                 {imageUrls.map((url, index) => (
-                    <View key={index} style={styles.galleryImageBoundingBox}>
+                    <TouchableOpacity key={index} onPress={() => openImage(url)} style={styles.galleryImageBoundingBox}>
                         <ImageBackground source={{ uri: url }} style={styles.galleryBackgroundImage} />
-                    </View>
+                    </TouchableOpacity>
                 ))}
             </ScrollView>
             <Bumper location={'bottom'} title={''} onPress={() => navigation.navigate("CameraPage", { username: username})}/>
