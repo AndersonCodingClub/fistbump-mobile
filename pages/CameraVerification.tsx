@@ -19,7 +19,7 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, but
 );
 
 const CameraVerification = ({ route, navigation }: {navigation: any, route: any}) => {
-    const { pic } = route.params;
+    const { pic, username } = route.params;
 
     const [userID, setUserID] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ const CameraVerification = ({ route, navigation }: {navigation: any, route: any}
     });
 
     const acceptImage = () => {
-        fetch('http://192.168.4.28:3000/save-image', {
+        fetch('http://10.9.148.13:3000/save-image', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const CameraVerification = ({ route, navigation }: {navigation: any, route: any}
             }),
         })
         .then(data => {
-            navigation.navigate('Home');
+            navigation.navigate('Home', { username: username });
         })
         .catch(error => {
             console.error(error);

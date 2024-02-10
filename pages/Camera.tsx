@@ -31,6 +31,8 @@ const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const cameraRef = useRef<Camera | null>(null);
 
+    const { username } = route.params;
+
     if (!permission) {
         requestPermission();
     }
@@ -38,14 +40,14 @@ const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     const takePicture = async () => {
         if (cameraRef) {
           const photo = await cameraRef.current!.takePictureAsync({base64: true});
-          navigation.navigate('CameraVerification', {pic: photo})
+          navigation.navigate('CameraVerification', {pic: photo, username: username})
         }
       };
 
     return (
         <Camera ref={(ref) => {if (ref) {cameraRef.current = ref;}}} style={styles.container} type={CameraType.front}>
             <View style={styles.fistbumpButton}>
-                <BackgroundButton title={"Daily Fistbump:"} subtext={"Greg Shatsman"} streak={0} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('Home')}></BackgroundButton>
+                <BackgroundButton title={"Daily Fistbump:"} subtext={"Greg Shatsman"} streak={0} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('Home', { username: username })}></BackgroundButton>
             </View>
             <View style={styles.captureButtonContainer}>
                 <TouchableOpacity onPress={takePicture} style={styles.captureButton}>

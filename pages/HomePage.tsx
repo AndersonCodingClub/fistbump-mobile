@@ -15,9 +15,9 @@ type BackgroundButtonProps = {
 };
 
 async function getImageUrls() {
-    const baseUrl = 'http://192.168.4.28:3000/serve/';
+    const baseUrl = 'http://10.9.148.13:3000/serve/';
     try {
-        const response = await fetch('http://192.168.4.28:3000/get-images', {
+        const response = await fetch('http://10.9.148.13:3000/get-images', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
                     </View>
                 ))}
             </ScrollView>
-            <Bumper location={'bottom'} title={''} onPress={() => navigation.navigate("CameraPage")}/>
+            <Bumper location={'bottom'} title={''} onPress={() => navigation.navigate("CameraPage", { username: username})}/>
         </View>
     );
 }

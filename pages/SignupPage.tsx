@@ -30,7 +30,7 @@ function SignUpScreen({navigation}: {navigation: any} ) {
         }
 
         else if (isButtonEnabled) {
-            fetch('http://192.168.4.28:3000/validate-signup-credentials', {
+            fetch('http://10.9.148.13:3000/validate-signup-credentials', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
