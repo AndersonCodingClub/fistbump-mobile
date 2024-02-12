@@ -20,7 +20,7 @@ function LogInScreen({navigation}: {navigation: any}) {
 
     const handlePress = () => {
         if (isButtonEnabled) {
-            fetch('http://10.9.148.13:3000/login', {
+            fetch(`${process.env.EXPO_PUBLIC_SERVER_IP}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

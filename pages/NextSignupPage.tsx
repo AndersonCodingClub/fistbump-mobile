@@ -100,7 +100,7 @@ const NextSignUpScreen = ({route, navigation}: {route: any, navigation: any}) =>
         }
       
         else if (isButtonEnabled) {
-            fetch('http://10.9.148.13:3000/signup', {
+            fetch(`${process.env.EXPO_PUBLIC_SERVER_IP}/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

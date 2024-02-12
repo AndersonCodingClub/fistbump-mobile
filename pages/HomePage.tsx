@@ -15,9 +15,10 @@ type BackgroundButtonProps = {
 };
 
 async function getImageUrls() {
-    const baseUrl = 'http://10.9.148.13:3000/serve/';
+    const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
+    const baseUrl = `${serverIP}/serve/`;
     try {
-        const response = await fetch('http://10.9.148.13:3000/get-images', {
+        const response = await fetch(`${serverIP}/get-images`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

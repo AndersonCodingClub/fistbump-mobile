@@ -30,7 +30,7 @@ function SignUpScreen({navigation}: {navigation: any} ) {
         }
 
         else if (isButtonEnabled) {
-            fetch('http://10.9.148.13:3000/validate-signup-credentials', {
+            fetch(`${process.env.EXPO_PUBLIC_SERVER_IP}/validate-signup-credentials`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

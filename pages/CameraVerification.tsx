@@ -28,7 +28,7 @@ const CameraVerification = ({ route, navigation }: {navigation: any, route: any}
     });
 
     const acceptImage = () => {
-        fetch('http://10.9.148.13:3000/save-image', {
+        fetch(`${process.env.EXPO_PUBLIC_SERVER_IP}/save-image`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
