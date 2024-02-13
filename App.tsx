@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import PostPage from './pages/PostPage';
 import LandingPage from './pages/LandingPage';
 import LogInPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
@@ -10,6 +11,7 @@ import SignUpPage from './pages/SignupPage';
 import NextSignUpPage from './pages/NextSignupPage';
 import CameraPage from './pages/Camera';
 import CameraVerification from './pages/CameraVerification';
+import EditProfile from './pages/EditProfile';
 import Profile from './pages/Profile';
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +42,11 @@ export default function App() {
 			options={{ headerShown: false }}
 		/>
 		<Stack.Screen 
+			name="Post" 
+			component={PostPage} 
+			options={{ headerShown: true, headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "Back" }}
+		/>
+		<Stack.Screen 
 			name="CameraPage" 
 			component={CameraPage} 
 			options={{ headerShown: false, animation: 'slide_from_bottom', gestureEnabled: false}}
@@ -65,9 +72,14 @@ export default function App() {
 			options={{ headerShown: true,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "Back" }}
 		/>
 		<Stack.Screen
+			name="Edit Profile"
+			component={EditProfile}
+			options={{ headerShown: false,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "" }}
+		/>
+		<Stack.Screen
 			name="Profile"
 			component={Profile}
-			options={{ headerShown: true,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "Back" }}
+			options={{ headerShown: false,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "" }}
 		/>
 		</Stack.Navigator>
 	</NavigationContainer>

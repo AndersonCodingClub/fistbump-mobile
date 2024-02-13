@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import { Camera, CameraType } from 'expo-camera';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type BackgroundButtonProps = {
     onPress: () => void;
@@ -11,6 +12,29 @@ type BackgroundButtonProps = {
     buttonStyle: any;
     streak: number;
 };
+
+async function getMatch() {
+    console.log("here");
+    const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
+    console.log(serverIP);
+    try {
+        const response = await fetch(`${serverIP}/get-match`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.msg === 'SUCCESS') {
+            console.log(data);
+        }
+        return [];
+    } catch (error) {
+        console.error(error);
+        alert('Network error');
+        return [];
+    }
+}
 
 const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, subtext, buttonStyle, streak}) => (
     <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
@@ -26,9 +50,11 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, sub
     </TouchableOpacity>
 );
 
-
 const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     const [permission, requestPermission] = Camera.useCameraPermissions();
+    const [userID, setUserID] = useState<string | null>(null);
+    const [imageUrls, setImageUrls] = useState<string[]>([]);
+
     const cameraRef = useRef<Camera | null>(null);
 
     const { username } = route.params;
@@ -36,6 +62,20 @@ const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     if (!permission) {
         requestPermission();
     }
+
+    useEffect(() => {
+        AsyncStorage.getItem('userID').then(retrievedUserID => {
+            if (retrievedUserID !== null) {
+                setUserID(retrievedUserID);
+            } else {
+                navigation.navigate('Landing');
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        getMatch()
+    }, []);
 
     const takePicture = async () => {
         if (cameraRef) {

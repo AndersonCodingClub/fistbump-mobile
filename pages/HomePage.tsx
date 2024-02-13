@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ImageBackground, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
@@ -78,26 +78,27 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
 
     const { username } = route.params;
 
-    const openImage = (url: string) => {
-        console.log("Clicked image URL:", url);
-    };
-
     return (
-        <View style={styles.container}>
-            <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>
-                    {`Welcome Back ${username}!`}
-                </Text>
-            </View>
-            <ScrollView style={styles.galleryContainer} contentContainerStyle={styles.galleryContentContainer}>
-                {imageUrls.map((url, index) => (
-                    <TouchableOpacity key={index} onPress={() => openImage(url)} style={styles.galleryImageBoundingBox}>
-                        <ImageBackground source={{ uri: url }} style={styles.galleryBackgroundImage} />
-                    </TouchableOpacity>
-                ))}
+        <SafeAreaView style={styles.safeArea}>
+            <ScrollView style={styles.container}>
+                <View style={styles.buttonContainer}>
+                    <BackgroundButton onPress={() => navigation.navigate('Edit Profile')} title="Edit Profile" buttonStyle={[styles.authButtonBase, {backgroundColor: '#F9724D'}]} subtext=''></BackgroundButton>
+                </View>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.titleText}>
+                        {`Welcome Back ${username}!`}
+                    </Text>
+                </View>
+                <View style={styles.galleryContainer}>
+                    {imageUrls.map((url, index) => (
+                        <TouchableOpacity key={index} onPress={() => navigation.navigate("Post", { url: url})} style={styles.galleryImageBoundingBox}>
+                            <ImageBackground source={{ uri: url }} style={styles.galleryBackgroundImage} />
+                        </TouchableOpacity>
+                    ))}
+                </View>
             </ScrollView>
             <Bumper location={'bottom'} title={''} onPress={() => navigation.navigate("CameraPage", { username: username})}/>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -107,8 +108,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#E3E3E3'
     },
 
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#E3E3E3'
+    },
+
     titleContainer: {
-        marginTop: 100
+        marginTop: 10
     },
 
     titleText: {
@@ -161,30 +167,25 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        flex: 2,
-        flexDirection: 'column',
+        flex: 4,
+        flexDirection: 'row',
         rowGap: 25,
-        marginTop: 20,
     },
 
     authButtonBase: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 50,
-        paddingBottom: 50,
-        paddingLeft: 30,
-        paddingRight: 30,
-        borderRadius: 5
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderRadius: 5,
     },
 
     galleryContainer: {
         flex: 1,
         flexDirection: 'column',
         marginTop: 20,
-        overflow: 'scroll'
-    },
-
-    galleryContentContainer: {
         alignItems: 'center',
         paddingBottom: 150
     },
@@ -201,5 +202,5 @@ const styles = StyleSheet.create({
     galleryBackgroundImage: {
         width: '100%',
         height: '100%'
-    }
+    },
 });
