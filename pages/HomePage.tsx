@@ -83,6 +83,7 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
             <ScrollView style={styles.container}>
                 <View style={styles.buttonContainer}>
                     <BackgroundButton onPress={() => navigation.navigate('Edit Profile')} title="Edit Profile" buttonStyle={[styles.authButtonBase, {backgroundColor: '#F9724D'}]} subtext=''></BackgroundButton>
+                    <BackgroundButton onPress={() => navigation.navigate('Profile')} title="Profile" buttonStyle={[styles.authButtonBase, {backgroundColor: '#F9724D'}]} subtext=''></BackgroundButton>
                 </View>
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>
