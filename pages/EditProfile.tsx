@@ -10,10 +10,15 @@ import * as ImagePicker from 'expo-image-picker';
 import DatePicker, { getFormatedDate} from 'react-native-modern-datepicker';
 
 export default function EditProfile ({route, navigation}: {route: any, navigation: any})  {
+    const [fontsLoaded] = useFonts({
+        'Roobert': require('../assets/Roobert-Regular.ttf'),
+        'Roobert-Bold': require('../assets/Roobert-Bold.otf')
+    });
+    
     const [selectedImage, setSelectedImage] = useState('')
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const[password, setPassword] = useState("");
+    const [newName, setNewname] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const[newPassword, setNewPassword] = useState("");
 
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
     const today = new Date();
@@ -88,7 +93,9 @@ export default function EditProfile ({route, navigation}: {route: any, navigatio
             </TouchableWithoutFeedback>
         );
     }
-
+    const { username } = route.params;
+    const { name } = route.params;
+    const { password } = route.params;
     return (
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
         <View style={styles.container}>
@@ -121,39 +128,40 @@ export default function EditProfile ({route, navigation}: {route: any, navigatio
 
                 
                 <View style={{marginLeft: 50}}>
-                    <View style={{flexDirection: "column", marginBottom: 6}}>
-                        <Text> Name </Text>
+                    <View style={styles.inputHeaderContainer}>
+                        <Text style={styles.titleText}> Name </Text>
                         <View style={styles.inputContainer}>
                             <TextInput
-                                value={name}
-                                onChangeText={value=>setName(value)}
+                                value={newName}
+                                onChangeText={value=>setNewName(value)}
+                                editable={true}
+                                placeholder={name}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.inputHeaderContainer}>
+                        <Text style={styles.titleText}> Email </Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                value={newEmail}
+                                onChangeText={value=>setNewEmail(value)}
                                 editable={true}
                             />
                         </View>
                     </View>
-                    <View style={{flexDirection: "column", marginBottom: 6}}>
-                        <Text> Email </Text>
+                    <View style={styles.inputHeaderContainer}>
+                        <Text style={styles.titleText}> Password </Text>
                         <View style={styles.inputContainer}>
                             <TextInput
-                                value={email}
-                                onChangeText={value=>setEmail(value)}
-                                editable={true}
-                            />
-                        </View>
-                    </View>
-                    <View style={{flexDirection: "column", marginBottom: 6}}>
-                        <Text> Password </Text>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                value={password}
-                                onChangeText={value=>setPassword(value)}
+                                value={newPassword}
+                                onChangeText={value=>setNewPassword(value)}
                                 editable={true}
                                 secureTextEntry
                             />
                         </View> 
                     </View>
-                    <View style={{flexDirection: "column", marginBottom: 6}}>
-                        <Text> Date of Birth </Text>
+                    <View style={styles.inputHeaderContainer}>
+                        <Text style={styles.titleText}> Date of Birth </Text>
                         <TouchableOpacity 
                         onPress={handleOnPressStartDate}
                         style={styles.inputContainer}>
@@ -173,6 +181,8 @@ export default function EditProfile ({route, navigation}: {route: any, navigatio
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
     },
 
     imageContainer:{
@@ -207,7 +217,20 @@ const styles = StyleSheet.create({
         borderRadius: 4, 
         marginVertical: 6, 
         justifyContent: "center", 
-        paddingLeft: 8
+        paddingLeft: 8,
+        backgroundColor: '#BCB4F7',
 
-    }
+    },
+    
+    inputHeaderContainer: {
+        flexDirection: "column", 
+        marginBottom: 6,
+        color: '#372F35',
+    },
+
+    titleText: {
+        fontFamily: 'Roobert',
+        color: '#372F35',
+        fontSize: 16,
+    },
 });

@@ -12,7 +12,6 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useIsFocused } from '@react-navigation/native';
 
 
-
 async function getImageUrls() {
     const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
     const baseUrl = `${serverIP}/serve/`;
@@ -36,36 +35,30 @@ async function getImageUrls() {
         return [];
     }
 }
-const isFocused = useIsFocused();
-const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-useEffect(() => {
-    if (isFocused) {
-        getImageUrls().then(urls => setImageUrls(urls));
-    }
-}, [isFocused]);
-const photosRoutes = ()=>(
-    <View style={{flex: 1}}>
+/*const photosRoutes = ()=>(
+   <View style={{flex: 1}}>
         <FlatList
-            data={imageUrls}
-            numColumns={3}
-            renderItem={({item,index}) =>(
-                <View style={{
-                    flex: 1,
-                    aspectRatio: 1,
-                    margin: 3
-                }}>
-                  <Image
-                    key={index}
-                    source={item}
-                    style={{width: "100%", height: "100%", borderRadius: 12}}
+        data={photos}
+        numColumns={3}
+        renderItem={({item, index})=> (
+            <View style={{
+                flex: 1,
+                aspectRatio: 1,
+                margin: 3
+            }}> 
+            <Image
+                key={index}
+                source={item}
+                style={{width: "100%", height: "100%", borderRadius: 12}}
+            />
+            </View>
 
-                    />
-                </View>
-            )}
-        />
-    </View>
-)
+        )} 
+    />
+
+   </View>
+)*/
 
 const LikesRoutes = ()=>(
     <View
@@ -76,10 +69,10 @@ const LikesRoutes = ()=>(
     />
 )
 
-const renderScene = SceneMap({
+/*const renderScene = SceneMap({
     first: photosRoutes,
     second: LikesRoutes
-});
+});*/
 
 
 const Profile = () => {
@@ -170,7 +163,13 @@ const Profile = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={{flex: 1, marginHorizontal: 22, marginTop: 20}}>
+
+         
+            
+        </SafeAreaView>
+    )
+}
+/*<View style={{flex: 1, marginHorizontal: 22, marginTop: 20}}>
                 <TabView 
                     navigationState={{index, routes}}
                     renderScene={renderScene}
@@ -178,9 +177,6 @@ const Profile = () => {
                     initialLayout={{width: layout.width}}
                     renderTabBar={renderTabBar}
                     />
-            </View>
-        </SafeAreaView>
-    )
-}
+            </View> */
 
 export default Profile
