@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -44,7 +45,7 @@ export default function App() {
 		<Stack.Screen 
 			name="Post" 
 			component={PostPage} 
-			options={{ headerShown: true, headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "Back" }}
+			options={{ headerShown: true, headerTintColor: '#fff', headerTransparent: true, headerTitle: "", headerBackTitleVisible: false }}
 		/>
 		<Stack.Screen 
 			name="CameraPage" 

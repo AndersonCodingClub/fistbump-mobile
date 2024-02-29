@@ -22,8 +22,7 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingTop: 120
+        flex: 1
     },
 
     backgroundContainer: {
@@ -39,9 +38,9 @@ const styles = StyleSheet.create({
     },
 
     background: {
-        width: '90%',
-        height: '80%',
-        borderRadius: 15,
+        width: '100%',
+        height: '100%',
+        borderRadius: 5,
         borderWidth: 1,
         borderColor: '#000'
     }
