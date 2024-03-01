@@ -1,20 +1,10 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import AppLoading from 'expo-app-loading';
-import { useFonts } from 'expo-font';
 import { Camera, CameraType } from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-type BackgroundButtonProps = {
-    onPress: () => void;
-    title: string;
-    subtext: string;
-    buttonStyle: any;
-    streak: number;
-};
+import Bumper from '../components/Bumper';
 
 async function getMatch() {
-    console.log("here");
     const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
     console.log(serverIP);
     try {
@@ -35,20 +25,6 @@ async function getMatch() {
         return [];
     }
 }
-
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, subtext, buttonStyle, streak}) => (
-    <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
-      <View style={styles.fistbumpButtonTextContainer}>
-        <Text style={styles.fistbumpButtonText}>{title}</Text>
-        <Text style={styles.fistbumpButtonSubText}>{subtext}</Text>
-      </View>
-      <View style={styles.fistbumpButtonTextContainer}>
-        <Image style={styles.fistbumpButtonStreakIcon} source={require('../assets/fire.png')} />
-        <Text style={styles.fistbumpButtonStreakNumber}>{streak}</Text>
-      </View>
-
-    </TouchableOpacity>
-);
 
 const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -85,16 +61,17 @@ const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
       };
 
     return (
-        <Camera ref={(ref) => {if (ref) {cameraRef.current = ref;}}} style={styles.container} type={CameraType.front}>
-            <View style={styles.fistbumpButton}>
-                <BackgroundButton title={"Daily Fistbump:"} subtext={"Greg Shatsman"} streak={0} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('Home', { username: username })}></BackgroundButton>
-            </View>
+        <>
+        <View style={styles.bumperContainer}>
+            <Bumper location='top' title='Your Fistbump:' subtext='Avery Allen' onPress={() => navigation.navigate("Home", { username: username })} />
+        </View>
+        <Camera ref={(ref) => { if (ref) { cameraRef.current = ref; } } } style={styles.container} type={CameraType.front}>
             <View style={styles.captureButtonContainer}>
                 <TouchableOpacity onPress={takePicture} style={styles.captureButton}>
 
                 </TouchableOpacity>
-            </View>            
-        </Camera>
+            </View>
+        </Camera></>
     );
 }
 
@@ -110,43 +87,6 @@ const styles = StyleSheet.create({
         color: '#372F35',
         fontSize: 45,
         textAlign: 'center'
-    },
-
-    fistbumpButtonContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 0,
-    },
-
-    fistbumpButton: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: '#BCB4F7',
-        width: '100%',
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25,
-        paddingTop: 50,
-        paddingBottom: 35,
-        justifyContent: 'flex-start'
-    },
-
-    fistbumpButtonText: {
-        fontFamily: 'Roobert-Bold',
-        color: '#372F35',
-        textAlign: 'center',
-        fontSize: 35,
-        flex: 3
-    },
-
-    fistbumpButtonSubText: {
-        fontFamily: 'Roobert-Bold',
-        color: '#372F35',
-        textAlign: 'center',
-        fontSize: 20,
-        marginTop: 10,
-        flex: 3,
     },
 
     captureButtonContainer: {
@@ -167,21 +107,9 @@ const styles = StyleSheet.create({
         opacity: 1
     },
 
-    fistbumpButtonStreakIcon: {
-        flex: 1,
-        paddingLeft: 20,
-        height: 20,
-        width: 20,
-        
-    },
-    fistbumpButtonStreakNumber: {
-        flex: 1,
-        paddingLeft: 20,
-    
-    },
-
-    fistbumpButtonTextContainer: {
-        flexDirection: 'column'
+    bumperContainer: {
+        zIndex: 2,
+        flex: .1
     }
 
 });

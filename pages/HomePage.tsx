@@ -98,7 +98,7 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
                     ))}
                 </View>
             </ScrollView>
-            <Bumper location={'bottom'} title={''} onPress={() => navigation.navigate("CameraPage", { username: username})}/>
+            <Bumper location={'bottom'} title={'Your Fistbump:'} subtext={'Avery Allen'} onPress={() => navigation.navigate("CameraPage", { username: username})}/>
         </SafeAreaView>
     );
 }
