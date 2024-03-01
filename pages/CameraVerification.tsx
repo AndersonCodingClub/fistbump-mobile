@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import { useRoute } from "@react-navigation/native"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
+import Bumper from '../components/Bumper';
 
 
 type BackgroundButtonProps = {
@@ -48,16 +49,16 @@ const CameraVerification = ({ route, navigation }: {navigation: any, route: any}
     };
 
     return(
-        <ImageBackground style={[styles.image, styles.reverse]} source={{uri: `data:image/jpeg;base64,${pic.base64}`}}>
-            <View style={styles.fistbumpButton}>
-                <BackgroundButton title={"Fistbump"} buttonStyle={[styles.fistbumpButton, styles.reverse]} onPress={() => console.log('button!')}></BackgroundButton>
-            </View>
-
-            <View style={styles.acceptButtonContainer}>
-                <BackgroundButton title={"👍"} buttonStyle={[styles.acceptButton, styles.reverse]} onPress={acceptImage}/>
-                <BackgroundButton title={"🗑️"} buttonStyle={[styles.declineButton, styles.reverse]} onPress={() => navigation.pop()}/>
-            </View>
+        <><View style={[styles.bumperContainer]}>
+            <Bumper location='top' title='Your Fistbump:' subtext='Avery Allen' onPress={() => console.log('we need to figure this button out in the future')} />
+        </View>
+        <ImageBackground style={[styles.image, styles.reverse]} source={{ uri: `data:image/jpeg;base64,${pic.base64}` }}>
+                <View style={styles.acceptButtonContainer}>
+                    <BackgroundButton title={"👍"} buttonStyle={[styles.acceptButton, styles.reverse]} onPress={acceptImage} />
+                    <BackgroundButton title={"🗑️"} buttonStyle={[styles.declineButton, styles.reverse]} onPress={() => navigation.pop()} />
+                </View>
         </ImageBackground>
+        </>
     );
 }
 
@@ -131,6 +132,11 @@ const styles = StyleSheet.create({
         width: 90,
         backgroundColor: '#c45151',
         justifyContent: 'center'
+    },
+
+    bumperContainer: {
+        zIndex: 2,
+        flex: .1
     }
 });
 
