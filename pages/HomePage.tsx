@@ -92,7 +92,7 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
                 </View>
                 <View style={styles.galleryContainer}>
                     {imageUrls.map((url, index) => (
-                        <TouchableOpacity key={index} onPress={() => navigation.navigate("Post", { url: url})} style={styles.galleryImageBoundingBox}>
+                        <TouchableOpacity key={index} onPress={() => navigation.navigate("Post", { url: url, urls: imageUrls, i: index})} style={styles.galleryImageBoundingBox}>
                             <ImageBackground source={{ uri: url }} style={styles.galleryBackgroundImage} />
                         </TouchableOpacity>
                     ))}

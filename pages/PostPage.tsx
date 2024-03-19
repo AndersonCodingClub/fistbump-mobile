@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import { StyleSheet, View, Image, Button } from 'react-native';
 import { useFonts } from 'expo-font';
 
 
@@ -9,12 +9,15 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
         'Roobert-Bold': require('../assets/Roobert-Bold.otf')
     });
 
-    const { url } = route.params;
+    const { url, urls, i } = route.params;
 
     return (
         <View style={styles.container}>
             <View style={styles.backgroundContainer}>
                 <Image source={{uri: url}} style={styles.background}/>
+                <View style={{ position: 'absolute', top: 300, left: 100 }}>
+                    <Button title="Button" onPress={() => navigation.navigate('Post', { url: urls[i+1], urls: urls, i: i+1})}></Button>
+                </View>
             </View>
         </View>
     );
