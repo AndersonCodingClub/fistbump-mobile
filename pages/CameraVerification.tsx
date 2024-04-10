@@ -19,7 +19,7 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, but
 );
 
 const CameraVerification = ({ route, navigation }: {navigation: any, route: any}) => {
-    const { pic, username } = route.params;
+    const { pic, username, matchUserRow } = route.params;
 
     const [userID, setUserID] = useState<string | null>(null);
 
@@ -35,7 +35,8 @@ const CameraVerification = ({ route, navigation }: {navigation: any, route: any}
             },
             body: JSON.stringify({
                 imageData: pic.base64,
-                userID: userID
+                userID: userID,
+                matchUserID: matchUserRow[0]
             }),
         })
         .then(data => {

@@ -20,8 +20,8 @@ function Bumper (propsIn: BumperProps) {
     const props = {...defaultProps, ...propsIn}
 
     return (
-        <BackgroundButton fontSize={props.fontSize} title={"Daily Fistbump:"} style={styles.fistbumpButton} onPress={props.onPress} opacity={1}>
-            <Text style={styles.fistbumpButtonSubText}>gdfhdfhsdfh</Text>
+        <BackgroundButton fontSize={props.fontSize} title={props.title}  style={styles.fistbumpButton} onPress={props.onPress} opacity={1}>
+            <Text style={styles.fistbumpButtonSubText}></Text>
         </BackgroundButton>
     );
 }

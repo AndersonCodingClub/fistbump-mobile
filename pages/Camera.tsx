@@ -13,29 +13,6 @@ type BackgroundButtonProps = {
     streak: number;
 };
 
-async function getMatch() {
-    console.log("here");
-    const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
-    console.log(serverIP);
-    try {
-        const response = await fetch(`${serverIP}/get-match`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await response.json();
-        if (data.msg === 'SUCCESS') {
-            console.log(data);
-        }
-        return [];
-    } catch (error) {
-        console.error(error);
-        alert('Network error');
-        return [];
-    }
-}
-
 const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, subtext, buttonStyle, streak}) => (
     <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
       <View style={styles.fistbumpButtonTextContainer}>
@@ -46,48 +23,36 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, sub
         <Image style={styles.fistbumpButtonStreakIcon} source={require('../assets/fire.png')} />
         <Text style={styles.fistbumpButtonStreakNumber}>{streak}</Text>
       </View>
-
     </TouchableOpacity>
 );
 
 const CameraPage = ({ route, navigation }: {route: any, navigation: any}) => {
     const [permission, requestPermission] = Camera.useCameraPermissions();
-    const [userID, setUserID] = useState<string | null>(null);
-    const [imageUrls, setImageUrls] = useState<string[]>([]);
-
     const cameraRef = useRef<Camera | null>(null);
 
-    const { username } = route.params;
+    const { username, userID, matchUserRow } = route.params;
 
     if (!permission) {
         requestPermission();
     }
 
-    useEffect(() => {
-        AsyncStorage.getItem('userID').then(retrievedUserID => {
-            if (retrievedUserID !== null) {
-                setUserID(retrievedUserID);
-            } else {
-                navigation.navigate('Landing');
-            }
-        });
-    }, []);
-
-    useEffect(() => {
-        getMatch()
-    }, []);
-
     const takePicture = async () => {
         if (cameraRef) {
           const photo = await cameraRef.current!.takePictureAsync({base64: true});
-          navigation.navigate('CameraVerification', {pic: photo, username: username})
+          navigation.navigate('CameraVerification', {pic: photo, username: username, matchUserRow: matchUserRow})
         }
       };
 
     return (
         <Camera ref={(ref) => {if (ref) {cameraRef.current = ref;}}} style={styles.container} type={CameraType.front}>
-            <View style={styles.fistbumpButton}>
-                <BackgroundButton title={"Daily Fistbump:"} subtext={"Greg Shatsman"} streak={0} buttonStyle={styles.fistbumpButton} onPress={() => navigation.navigate('Home', { username: username })}></BackgroundButton>
+            <View style={styles.fistbumpButton}>            
+                <BackgroundButton
+                    title={"Daily Fistbump:"}
+                    subtext={matchUserRow[1] || ""}
+                    streak={0}
+                    buttonStyle={styles.fistbumpButton}
+                    onPress={() => navigation.navigate('Home', { username: username })}
+                />
             </View>
             <View style={styles.captureButtonContainer}>
                 <TouchableOpacity onPress={takePicture} style={styles.captureButton}>

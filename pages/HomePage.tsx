@@ -5,13 +5,12 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import { useIsFocused } from '@react-navigation/native';
 
-import Bumper from '../components/Bumper';
-
 type BackgroundButtonProps = {
     onPress: () => void;
     title: string;
     subtext: string; 
     buttonStyle: any;
+    matchUserRow: any | null;
 };
 
 async function getImageUrls() {
@@ -38,10 +37,10 @@ async function getImageUrls() {
     }
 }
 
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle, subtext}) => (
+const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle, subtext, matchUserRow}) => (
     <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
       <Text style={styles.fistbumpButtonText}>{title}</Text>
-      <Text style={styles.fistbumpButtonSubText}>{subtext}</Text>
+      <Text style={styles.fistbumpButtonSubText}>{matchUserRow ? matchUserRow[1] : subtext}</Text>
     </TouchableOpacity>
 );
 
@@ -59,20 +58,53 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
 
     const [userID, setUserID] = useState<string | null>(null);
     const [imageUrls, setImageUrls] = useState<string[]>([]);
+    const [matchUserRow, setMatchUserRow] = useState<any>(null);
+
+    const getMatch = async () => {
+        try {
+            const response = await fetch(`${process.env.EXPO_PUBLIC_SERVER_IP}/get-match`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userID: userID
+                }),
+            });
+            const data = await response.json();
+            if (data.msg === 'SUCCESS') {
+                setMatchUserRow(data.match_user_row)
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Network error');
+        }
+    };
 
     useEffect(() => {
-        AsyncStorage.getItem('userID').then(retrievedUserID => {
+        const getUserID = async () => {
+            const retrievedUserID = await AsyncStorage.getItem('userID');
             if (retrievedUserID !== null) {
                 setUserID(retrievedUserID);
             } else {
                 navigation.navigate('Landing');
             }
-        });
+        };
+        getUserID();
     }, []);
+
+    useEffect(() => {
+        if (userID) {
+            getMatch();
+        }
+    }, [userID]);
 
     useEffect(() => {
         if (isFocused) {
             getImageUrls().then(urls => setImageUrls(urls));
+            if (userID) {
+                getMatch();
+            }
         }
     }, [isFocused]);
 
@@ -82,8 +114,7 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
         <SafeAreaView style={styles.safeArea}>
             <ScrollView style={styles.container}>
                 <View style={styles.buttonContainer}>
-                    <BackgroundButton onPress={() => navigation.navigate('Edit Profile')} title="Edit Profile" buttonStyle={[styles.authButtonBase, {backgroundColor: '#F9724D'}]} subtext=''></BackgroundButton>
-                    <BackgroundButton onPress={() => navigation.navigate('Profile')} title="Profile" buttonStyle={[styles.authButtonBase, {backgroundColor: '#F9724D'}]} subtext=''></BackgroundButton>
+                    <BackgroundButton onPress={() => navigation.navigate('Profile')} title="Profile" buttonStyle={[styles.authButtonBase, {backgroundColor: '#F9724D'}]} subtext='' matchUserRow={null}></BackgroundButton>
                 </View>
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>
@@ -98,7 +129,13 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
                     ))}
                 </View>
             </ScrollView>
-            <Bumper location={'bottom'} title={''} onPress={() => navigation.navigate("CameraPage", { username: username})}/>
+            <BackgroundButton 
+                title={"Daily Fistbump:"} 
+                subtext={"Greg Shatsman"} 
+                buttonStyle={styles.fistbumpButton} 
+                onPress={() => navigation.navigate("CameraPage", { username: username, userID: userID, matchUserRow: matchUserRow })}
+                matchUserRow={matchUserRow}
+            />
         </SafeAreaView>
     );
 }
