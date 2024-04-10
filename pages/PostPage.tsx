@@ -11,12 +11,25 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
 
     const { url, urls, i } = route.params;
 
+    const handlePrevious = () => {
+        const prevIndex = Math.max(i - 1, 0);
+        navigation.navigate('Post', { url: urls[prevIndex], urls: urls, i: prevIndex });
+    };
+
+    const handleNext = () => {
+        const nextIndex = Math.min(i + 1, urls.length - 1);
+        navigation.navigate('Post', { url: urls[nextIndex], urls: urls, i: nextIndex });
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.backgroundContainer}>
                 <Image source={{uri: url}} style={styles.background}/>
-                <View style={{ position: 'absolute', top: 300, left: 100 }}>
-                    <Button title="Button" onPress={() => navigation.navigate('Post', { url: urls[i+1], urls: urls, i: i+1})}></Button>
+                <View style={{ position: 'absolute', top: 300, left: 75 }}>
+                    <Button title="Previous" onPress={handlePrevious}></Button>
+                </View>
+                <View style={{ position: 'absolute', top: 300, left: 255 }}>
+                    <Button title="Next" onPress={handleNext}></Button>
                 </View>
             </View>
         </View>
