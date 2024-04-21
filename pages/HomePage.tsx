@@ -44,6 +44,12 @@ const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, but
     </TouchableOpacity>
 );
 
+const ProfileButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle, subtext, matchUserRow}) => (
+    <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
+      <Text style={styles.fistbumpProfileText}>{title}</Text>
+    </TouchableOpacity>
+);
+
 export default function HomePage({route, navigation}: {route: any, navigation: any}) {
     const isFocused = useIsFocused();
 
@@ -114,13 +120,10 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
         <SafeAreaView style={styles.safeArea}>
             <ScrollView style={styles.container}>
                 <View style={styles.buttonContainer}>
-                    <BackgroundButton onPress={() => navigation.navigate('Profile')} title="Profile" buttonStyle={[styles.authButtonBase, {backgroundColor: '#F9724D'}]} subtext='' matchUserRow={null}></BackgroundButton>
+                    <Text style={styles.fistbumpHeaderText}>Fistbump</Text>
+                    <ProfileButton onPress={() => navigation.navigate('Profile')} title="Profile" buttonStyle={[styles.profileButton, {backgroundColor: '#F9724D'}]} subtext='' matchUserRow={null}></ProfileButton>
                 </View>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.titleText}>
-                        {`Welcome Back ${username}!`}
-                    </Text>
-                </View>
+
                 <View style={styles.galleryContainer}>
                     {imageUrls.map((url, index) => (
                         <TouchableOpacity key={index} onPress={() => navigation.navigate("Post", { url: url, urls: imageUrls, i: index})} style={styles.galleryImageBoundingBox}>
@@ -188,6 +191,14 @@ const styles = StyleSheet.create({
         flex: 1
     },
 
+    fistbumpProfileText: {
+        fontFamily: 'Roobert-Bold',
+        color: '#372F35',
+        textAlign: 'center',
+        fontSize: 25,
+        flex: 1
+    },
+
     fistbumpButtonSubText: {
         fontFamily: 'Roobert-Bold',
         color: '#372F35',
@@ -207,16 +218,22 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flex: 4,
         flexDirection: 'row',
-        rowGap: 25,
+        columnGap: 120,
+        alignItems: 'center',
+        paddingLeft: 20
     },
 
-    authButtonBase: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
+    fistbumpHeaderText: {
+        fontFamily: 'Roobert',
+        color: '#372F35',
+        fontSize: 35
+    },
+
+    profileButton: {
+        paddingTop: 5,
+        paddingBottom: 0,
+        paddingLeft: 5,
+        paddingRight: 5,
         borderRadius: 5,
     },
 
