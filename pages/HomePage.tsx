@@ -131,7 +131,7 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
             </ScrollView>
             <BackgroundButton 
                 title={"Daily Fistbump:"} 
-                subtext={"Greg Shatsman"} 
+                subtext={"Zain Javaid"} 
                 buttonStyle={styles.fistbumpButton} 
                 onPress={() => navigation.navigate("CameraPage", { username: username, userID: userID, matchUserRow: matchUserRow })}
                 matchUserRow={matchUserRow}
