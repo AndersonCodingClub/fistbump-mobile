@@ -75,9 +75,42 @@ const LikesRoutes = ()=>(
 });*/
 
 
-const Profile = () => {
+export default function Profile({route, navigation}: {route: any, navigation: any}) {
     const layout = useWindowDimensions();
     const [index, setIndex] = useState(0);
+    
+    const { userID } = route.params;
+
+    const [name, setName] = useState('Loading...');
+    const [username, setUsername] = useState('Loading...');
+    const [followerCount, setFollowerCount] = useState('0');
+    const [followingCount, setFollowingCount] = useState('0');
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
+            try {
+                const response = await fetch(`${serverIP}/get-user-info/${userID}`);
+                const data = await response.json();
+                if (data.msg === 'SUCCESS') {
+                    setName(data.name);
+                    setUsername(data.username);
+                    setFollowerCount(data.followerCount);
+                    setFollowingCount(data.followingCount);
+                } else {
+                    console.error('Failed to load user info');
+                    setName('Error');
+                    setUsername('Error');
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                setName('Network Error');
+                setUsername('Network Error');
+            }
+        };
+
+        getUserInfo();
+    }, [userID]);
 
     const [routes] = useState([
         {key: "first", title: "Photos"},
@@ -119,20 +152,16 @@ const Profile = () => {
                     }}
                 />
 
-                <Text style={{marginVertical: 8}}>
-                    Avery Allen
-                </Text>
-                <Text>
-                    GigaChad
-                </Text>
+                <Text style={{marginVertical: 8}}>{name}</Text>
+                <Text>{username}</Text>
                 
                 <View style={{ paddingVertical: 8, flexDirection: "row"}}>
                     <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 10}}>
-                        <Text> 222 </Text>
+                        <Text> {followerCount} </Text>
                         <Text> Followers </Text>
                     </View>
                     <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 10}}>
-                        <Text> 67 </Text>
+                        <Text> {followingCount} </Text>
                         <Text> Following </Text>
                     </View>
                     <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 10}}>
@@ -178,5 +207,3 @@ const Profile = () => {
                     renderTabBar={renderTabBar}
                     />
             </View> */
-
-export default Profile

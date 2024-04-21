@@ -121,7 +121,7 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
             <ScrollView style={styles.container}>
                 <View style={styles.buttonContainer}>
                     <Text style={styles.fistbumpHeaderText}>Fistbump</Text>
-                    <ProfileButton onPress={() => navigation.navigate('Profile')} title="Profile" buttonStyle={[styles.profileButton, {backgroundColor: '#F9724D'}]} subtext='' matchUserRow={null}></ProfileButton>
+                    <ProfileButton onPress={() => navigation.navigate('Profile', { userID: userID })} title="Profile" buttonStyle={[styles.profileButton, {backgroundColor: '#F9724D'}]} subtext='' matchUserRow={null}></ProfileButton>
                 </View>
 
                 <View style={styles.galleryContainer}>
