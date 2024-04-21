@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Button, Text } from 'react-native';
+import { StyleSheet, View, Image, Button, Text, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 
 
@@ -22,6 +22,8 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
         navigation.navigate('Post', { url: urls[nextIndex], urls: urls, i: nextIndex });
     };
 
+    const [user1ID, setUser1ID] = useState();
+    const [user2ID, setUser2ID] = useState();
     const [user1Name, setUser1Name] = useState('Loading...');
     const [user2Name, setUser2Name] = useState('Loading...');
     const [datePublished, setDatePublished] = useState('Loading...');
@@ -30,6 +32,8 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
         fetch(metadataUrl)
             .then(response => response.json())
             .then(data => {
+                setUser1ID(data.user1_id);
+                setUser2ID(data.user2_id);
                 setUser1Name(data.user1_name);
                 setUser2Name(data.user2_name);
                 setDatePublished(data.date_published);
@@ -53,10 +57,14 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
                     <Button title="Next" onPress={handleNext}></Button>
                 </View>
                 <View style={{ position: 'absolute', top: 600, left: 75 }}>
-                    <Text style={styles.infoText}>{user1Name}</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user1ID })}>
+                        <Text style={[styles.infoText, styles.nameText]}>{user1Name}</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={{ position: 'absolute', top: 650, left: 75 }}>
-                    <Text style={styles.infoText}>{user2Name}</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user2ID })}>
+                        <Text style={[styles.infoText, styles.nameText]}>{user2Name}</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={{ position: 'absolute', top: 700, left: 75 }}>
                     <Text style={styles.infoText}>{datePublished}</Text>
@@ -94,5 +102,10 @@ const styles = StyleSheet.create({
     infoText: {
         color: '#fff',
         fontSize: 25
+    },
+
+    nameText: {
+        textDecorationLine: 'underline',
+        fontWeight: 'bold'
     }
 });
