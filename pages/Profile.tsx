@@ -87,8 +87,6 @@ export default function Profile({route, navigation}: {route: any, navigation: an
     const [followingCount, setFollowingCount] = useState('0');
     const [postCount, setPostCount] = useState('0');
 
-    console.log(postCount);
-
     useEffect(() => {
         const getUserInfo = async () => {
             const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
