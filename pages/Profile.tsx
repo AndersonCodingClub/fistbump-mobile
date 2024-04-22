@@ -85,6 +85,9 @@ export default function Profile({route, navigation}: {route: any, navigation: an
     const [username, setUsername] = useState('Loading...');
     const [followerCount, setFollowerCount] = useState('0');
     const [followingCount, setFollowingCount] = useState('0');
+    const [postCount, setPostCount] = useState('0');
+
+    console.log(postCount);
 
     useEffect(() => {
         const getUserInfo = async () => {
@@ -97,6 +100,7 @@ export default function Profile({route, navigation}: {route: any, navigation: an
                     setUsername(data.username);
                     setFollowerCount(data.followerCount);
                     setFollowingCount(data.followingCount);
+                    setPostCount(data.postCount);
                 } else {
                     console.error('Failed to load user info');
                     setName('Error');
@@ -165,8 +169,8 @@ export default function Profile({route, navigation}: {route: any, navigation: an
                         <Text> Following </Text>
                     </View>
                     <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 10}}>
-                        <Text> 999k </Text>
-                        <Text> Likes </Text>
+                        <Text> {postCount} </Text>
+                        <Text> Posts </Text>
                     </View>
                 </View>
                 <View style={{flexDirection: 'row'}}>
