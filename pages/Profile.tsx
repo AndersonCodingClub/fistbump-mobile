@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
+import { useFonts } from 'expo-font';
 
 
 async function getImageUrls() {
@@ -30,6 +31,11 @@ async function getImageUrls() {
 
 export default function Profile({route, navigation}: {route: any, navigation: any}) {    
     const { userID } = route.params;
+
+    const [fontsLoaded] = useFonts({
+        'Roobert': require('../assets/Roobert-Regular.ttf'),
+        'Roobert-Bold': require('../assets/Roobert-Bold.otf')
+    });
 
     const [name, setName] = useState('Loading...');
     const [username, setUsername] = useState('Loading...');
@@ -70,43 +76,39 @@ export default function Profile({route, navigation}: {route: any, navigation: an
     }, []);
 
     return (
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <ScrollView>
             <StatusBar backgroundColor={'#372F35'}/>
-            <View style={{width: "100%"}}>
-            <Image
-                source={require('../assets/adaptive-icon.png')}
-                resizeMode='cover'
-                style={{ height: 228, width: "100%"}}/>
-            </View>
 
-            <View style={{flex: 1, alignItems: "center"}}>
+            <View style={{ flex: 1, marginLeft: 25, flexDirection: 'row', marginTop: 35 }}>
                 <Image 
                     source = {require('../assets/adaptive-icon.png')}
                     resizeMode='contain'
                     style={{
-                        height: 155,
-                        width: 155,
+                        height: 100,
+                        width: 100,
                         borderRadius: 999,
-                        borderWidth: 2,
-                        marginTop: -90,
+                        borderWidth: 1,
+                        marginTop: 0,
                     }}
                 />
-
-                <Text style={{ marginVertical: 8 }}>{name}</Text>
-                <Text>{username}</Text>
-                
+                <View style={{ display: 'flex', flexDirection: 'column', rowGap: 10, marginLeft: 25, marginTop: 20 }}>
+                    <Text style={styles.profileNameText}>{name}</Text>
+                    <Text style={styles.profileUsernameText}>{username}</Text>
+                </View>
+            </View>
+            <View style={{ alignItems: 'center', marginTop: 15 }}>
                 <View style={{ paddingVertical: 8, flexDirection: "row"}}>
-                    <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 10}}>
-                        <Text> {followerCount} </Text>
+                    <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 20}}>
+                        <Text style={styles.statText}> {followerCount} </Text>
                         <Text> Followers </Text>
                     </View>
-                    <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 10}}>
-                        <Text> {followingCount} </Text>
+                    <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 20}}>
+                        <Text style={styles.statText}> {followingCount} </Text>
                         <Text> Following </Text>
                     </View>
-                    <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 10}}>
-                        <Text> {postCount} </Text>
+                    <View style={{flexDirection: "column", alignItems: "center", marginHorizontal: 20}}>
+                        <Text style={styles.statText}> {postCount} </Text>
                         <Text> Posts </Text>
                     </View>
                 </View>
@@ -125,6 +127,21 @@ export default function Profile({route, navigation}: {route: any, navigation: an
 }
 
 const styles = StyleSheet.create({
+    profileNameText: {
+        fontFamily: 'Roobert',
+        fontSize: 20
+    },
+
+    profileUsernameText: {
+        fontFamily: 'Roobert',
+        fontSize: 16
+    },
+
+    statText: {
+        fontFamily: 'Roobert',
+        fontWeight: 'bold'
+    },
+
     galleryContainer: {
         flex: 1,
         flexDirection: 'column',
