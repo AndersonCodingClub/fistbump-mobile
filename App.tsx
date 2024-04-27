@@ -80,7 +80,7 @@ export default function App() {
 		<Stack.Screen
 			name="Profile"
 			component={Profile}
-			options={{ headerShown: true,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: ""}}
+			options={{ headerShown: true,  headerTintColor: '#372F35', headerTransparent: true, headerTitle: "", headerBackTitle: "", headerBackTitleVisible: false }}
 		/>
 		</Stack.Navigator>
 	</NavigationContainer>
