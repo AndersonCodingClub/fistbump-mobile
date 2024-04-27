@@ -56,17 +56,18 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
                 <View style={{ position: 'absolute', top: 300, left: 255 }}>
                     <Button title="Next" onPress={handleNext}></Button>
                 </View>
-                <View style={{ position: 'absolute', top: 600, left: 75 }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user1ID })}>
-                        <Text style={[styles.infoText, styles.nameText]}>{user1Name}</Text>
-                    </TouchableOpacity>
+                <View style={{ position: 'absolute', top: 680, left: 50 }}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user1ID })} >
+                            <Text style={[styles.infoText, styles.nameText]}>{user1Name}</Text>
+                        </TouchableOpacity>
+                        <Text style={[styles.infoText]}>{'  &  '}</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user2ID })} >
+                            <Text style={[styles.infoText, styles.nameText]}>{user2Name}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={{ position: 'absolute', top: 650, left: 75 }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user2ID })}>
-                        <Text style={[styles.infoText, styles.nameText]}>{user2Name}</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ position: 'absolute', top: 700, left: 75 }}>
+                <View style={{ position: 'absolute', top: 720, left: 50 }}>
                     <Text style={styles.infoText}>{datePublished}</Text>
                 </View>
             </View>
@@ -101,11 +102,15 @@ const styles = StyleSheet.create({
 
     infoText: {
         color: '#fff',
-        fontSize: 25
+        fontSize: 20,
+        fontWeight: 'bold'
     },
 
     nameText: {
         textDecorationLine: 'underline',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textShadowColor: 'yellow',
+        textShadowOffset: {width: 5, height: 5},
+        textShadowRadius: 10
     }
 });
