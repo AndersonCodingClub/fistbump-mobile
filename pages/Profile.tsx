@@ -31,6 +31,8 @@ async function getImageUrls() {
 
 export default function Profile({route, navigation}: {route: any, navigation: any}) {    
     const { userID, viewerUserID } = route.params;
+    const viewerId = String(viewerUserID);
+    const userId = String(userID);
 
     const [fontsLoaded] = useFonts({
         'Roobert': require('../assets/Roobert-Regular.ttf'),
@@ -156,7 +158,7 @@ export default function Profile({route, navigation}: {route: any, navigation: an
                 <View style={{ display: 'flex', flexDirection: 'column', rowGap: 10, marginLeft: 25, marginTop: 0 }}>
                     <Text style={styles.profileNameText}>{name}</Text>
                     <Text style={styles.profileUsernameText}>{username}</Text>
-                    {viewerUserID !== userID && (
+                    {viewerId !== userId && (
                         <TouchableOpacity style={[styles.followButton, { backgroundColor: isFollowing ? '#d4d4d4' : '#4c68d7' }]} onPress={toggleFollow}>
                         <Text style={{fontFamily: 'Roobert-Bold', fontSize: 15, color: 'white'}}>
                             {isFollowing ? 'Unfollow' : 'Follow'}
