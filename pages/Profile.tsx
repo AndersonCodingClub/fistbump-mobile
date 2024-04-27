@@ -30,7 +30,7 @@ async function getImageUrls() {
 }
 
 export default function Profile({route, navigation}: {route: any, navigation: any}) {    
-    const { userID } = route.params;
+    const { userID, viewerUserID } = route.params;
 
     const [fontsLoaded] = useFonts({
         'Roobert': require('../assets/Roobert-Regular.ttf'),
@@ -43,6 +43,7 @@ export default function Profile({route, navigation}: {route: any, navigation: an
     const [followingCount, setFollowingCount] = useState('0');
     const [postCount, setPostCount] = useState('0');
     const [imageUrls, setImageUrls] = useState<string[]>([]);
+    const [isFollowing, setIsFollowing] = useState(true);
 
     useEffect(() => {
         const getUserInfo = async () => {
@@ -72,6 +73,66 @@ export default function Profile({route, navigation}: {route: any, navigation: an
     }, [userID]);
 
     useEffect(() => {
+        const checkFollowingStatus = async () => {
+            const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
+            try {
+                const response = await fetch(`${serverIP}/check-following-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        viewerUserID: viewerUserID,
+                        userID: userID
+                    }),
+                });
+                const data = await response.json();
+                if (data.msg === 'SUCCESS') {
+                    setIsFollowing(data.isFollowing);
+                } else {
+                    console.error('Failed to check following status');
+                }
+            } catch (error) {
+                console.error('Network error when checking following status:', error);
+            }
+        };
+    
+        if (viewerUserID && userID) {
+            checkFollowingStatus();
+        }
+    }, [viewerUserID, userID]);
+
+    const toggleFollow = async () => {
+        const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
+        const endpoint = isFollowing ? '/unfollow' : '/follow';
+        try {
+            const response = await fetch(`${serverIP}${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    followerID: viewerUserID,
+                    followingID: userID
+                }),
+            });
+            const data = await response.json();
+            if (data.msg === 'SUCCESS') {
+                setIsFollowing(!isFollowing);
+                if (isFollowing) {
+                    setFollowerCount(prev => (parseInt(prev) - 1).toString());
+                } else {
+                    setFollowerCount(prev => (parseInt(prev) + 1).toString());
+                }
+            } else {
+                console.error('Failed to toggle follow status');
+            }
+        } catch (error) {
+            console.error('Network error when toggling follow status:', error);
+        }
+    };
+
+    useEffect(() => {
         getImageUrls().then(urls => setImageUrls(urls));
     }, []);
 
@@ -92,9 +153,16 @@ export default function Profile({route, navigation}: {route: any, navigation: an
                         marginTop: 0,
                     }}
                 />
-                <View style={{ display: 'flex', flexDirection: 'column', rowGap: 10, marginLeft: 25, marginTop: 20 }}>
+                <View style={{ display: 'flex', flexDirection: 'column', rowGap: 10, marginLeft: 25, marginTop: 0 }}>
                     <Text style={styles.profileNameText}>{name}</Text>
                     <Text style={styles.profileUsernameText}>{username}</Text>
+                    {viewerUserID !== userID && (
+                        <TouchableOpacity style={[styles.followButton, { backgroundColor: isFollowing ? '#d4d4d4' : '#4c68d7' }]} onPress={toggleFollow}>
+                        <Text style={{fontFamily: 'Roobert-Bold', fontSize: 15, color: 'white'}}>
+                            {isFollowing ? 'Unfollow' : 'Follow'}
+                        </Text>
+                    </TouchableOpacity>
+                    )}
                 </View>
             </View>
             <View style={{ alignItems: 'center', marginTop: 15 }}>
@@ -135,6 +203,14 @@ const styles = StyleSheet.create({
     profileUsernameText: {
         fontFamily: 'Roobert',
         fontSize: 16
+    },
+
+    followButton: {
+        width: 75,
+        height: 30,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     statText: {

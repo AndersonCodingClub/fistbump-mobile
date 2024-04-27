@@ -121,12 +121,12 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
             <ScrollView style={styles.container}>
                 <View style={styles.buttonContainer}>
                     <Text style={styles.fistbumpHeaderText}>Fistbump</Text>
-                    <ProfileButton onPress={() => navigation.navigate('Profile', { userID: userID })} title="Profile" buttonStyle={[styles.profileButton, {backgroundColor: '#F9724D'}]} subtext='' matchUserRow={null}></ProfileButton>
+                    <ProfileButton onPress={() => navigation.navigate('Profile', { userID: userID, viewerUserID: userID })} title="Profile" buttonStyle={[styles.profileButton, {backgroundColor: '#F9724D'}]} subtext='' matchUserRow={null}></ProfileButton>
                 </View>
 
                 <View style={styles.galleryContainer}>
                     {imageUrls.map((url, index) => (
-                        <TouchableOpacity key={index} onPress={() => navigation.navigate("Post", { url: url, urls: imageUrls, i: index})} style={styles.galleryImageBoundingBox}>
+                        <TouchableOpacity key={index} onPress={() => navigation.navigate("Post", { url: url, urls: imageUrls, i: index, viewerUserID: userID })} style={styles.galleryImageBoundingBox}>
                             <ImageBackground source={{ uri: url }} style={styles.galleryBackgroundImage} />
                         </TouchableOpacity>
                     ))}

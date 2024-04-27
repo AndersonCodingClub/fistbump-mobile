@@ -9,7 +9,7 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
         'Roobert-Bold': require('../assets/Roobert-Bold.otf')
     });
 
-    const { url, urls, i } = route.params;
+    const { url, urls, i, viewerUserID } = route.params;
     const metadataUrl = url + '/metadata';
 
     const handlePrevious = () => {
@@ -58,11 +58,11 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
                 </View>
                 <View style={{ position: 'absolute', top: 680, left: 50 }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user1ID })} >
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user1ID, viewerUserID: viewerUserID })} >
                             <Text style={[styles.infoText, styles.nameText]}>{user1Name}</Text>
                         </TouchableOpacity>
                         <Text style={[styles.infoText]}>{'  &  '}</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user2ID })} >
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user2ID, viewerUserID: viewerUserID })} >
                             <Text style={[styles.infoText, styles.nameText]}>{user2Name}</Text>
                         </TouchableOpacity>
                     </View>
