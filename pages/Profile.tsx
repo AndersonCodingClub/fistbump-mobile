@@ -9,7 +9,7 @@ async function getImageUrls() {
     const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
     const baseUrl = `${serverIP}/serve/`;
     try {
-        const response = await fetch(`${serverIP}/get-images`, {
+        const response = await fetch(`${serverIP}/get-posts`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
