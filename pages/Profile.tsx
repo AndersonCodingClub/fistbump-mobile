@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
+import * as ImagePicker from 'expo-image-picker';
+import { Buffer } from 'buffer';
 
 
 async function getImageUrls() {
@@ -46,6 +48,7 @@ export default function Profile({route, navigation}: {route: any, navigation: an
     const [postCount, setPostCount] = useState('0');
     const [imageUrls, setImageUrls] = useState<string[]>([]);
     const [isFollowing, setIsFollowing] = useState(true);
+    const [profilePicture, setProfilePicture] = useState(require('../assets/adaptive-icon.png'));
 
     useEffect(() => {
         const getUserInfo = async () => {
@@ -59,6 +62,11 @@ export default function Profile({route, navigation}: {route: any, navigation: an
                     setFollowerCount(data.followerCount);
                     setFollowingCount(data.followingCount);
                     setPostCount(data.postCount);
+                    if (data.profilePicture && data.profilePicture.trim() !== '') {
+                        setProfilePicture({ uri: `${serverIP}/serve/${data.profilePicture}` });
+                    } else {
+                        setProfilePicture(require('../assets/adaptive-icon.png'));
+                    }
                 } else {
                     console.error('Failed to load user info');
                     setName('Error');
@@ -134,6 +142,67 @@ export default function Profile({route, navigation}: {route: any, navigation: an
         }
     };
 
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+    
+        if (!result.canceled && result.assets) {
+            setProfilePicture({ uri: result.assets[0].uri });
+            uploadProfilePicture(result.assets[0].uri);
+        }
+    };
+
+    const uploadProfilePicture = async (uri: string) => {
+        const serverIP = process.env.EXPO_PUBLIC_SERVER_IP;
+    
+        try {
+            const response = await fetch(uri);
+            const blob = await response.blob();
+    
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                const base64data = reader.result;
+                if (base64data) {
+                    const base64 = (base64data as string).split(',')[1];
+    
+                    try {
+                        const uploadResponse = await fetch(`${serverIP}/save-profile-picture`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                userID: userID,
+                                imageData: base64
+                            })
+                        });
+                        const uploadData = await uploadResponse.json();
+                        if (uploadData.msg === 'SUCCESS') {
+                            Alert.alert("Success", "Profile picture updated successfully.");
+                        } else {
+                            console.error('Failed to upload profile picture');
+                            Alert.alert("Upload failed", "Failed to upload profile picture.");
+                        }
+                    } catch (error) {
+                        console.error('Network error:', error);
+                        Alert.alert("Network error", "Failed to communicate with the server.");
+                    }
+                } else {
+                    console.error("Failed to convert image to base64.");
+                    Alert.alert("Conversion Error", "Failed to convert image to base64.");
+                }
+            };
+            reader.readAsDataURL(blob);
+        } catch (error) {
+            console.error("Error fetching image to upload", error);
+            Alert.alert("Upload Error", "Could not load image for upload.");
+        }
+    };
+
     useEffect(() => {
         getImageUrls().then(urls => setImageUrls(urls));
     }, []);
@@ -144,17 +213,19 @@ export default function Profile({route, navigation}: {route: any, navigation: an
             <StatusBar backgroundColor={'#372F35'}/>
 
             <View style={{ flex: 1, marginLeft: 25, flexDirection: 'row', marginTop: 35 }}>
-                <Image 
-                    source = {require('../assets/adaptive-icon.png')}
-                    resizeMode='contain'
-                    style={{
-                        height: 100,
-                        width: 100,
-                        borderRadius: 999,
-                        borderWidth: 1,
-                        marginTop: 0,
-                    }}
-                />
+                <TouchableOpacity onPress={viewerId === userId ? pickImage : undefined} activeOpacity={viewerUserID === userId ? 0.2 : 1}>
+                    <Image 
+                        source={profilePicture}
+                        resizeMode='contain'
+                        style={{
+                            height: 100,
+                            width: 100,
+                            borderRadius: 999,
+                            borderWidth: 1,
+                            marginTop: 0,
+                        }}
+                    />
+                </TouchableOpacity>
                 <View style={{ display: 'flex', flexDirection: 'column', rowGap: 10, marginLeft: 25, marginTop: 0 }}>
                     <Text style={styles.profileNameText}>{name}</Text>
                     <Text style={styles.profileUsernameText}>{username}</Text>
