@@ -14,12 +14,12 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
 
     const handlePrevious = () => {
         const prevIndex = Math.max(i - 1, 0);
-        navigation.navigate('Post', { url: urls[prevIndex], urls: urls, i: prevIndex });
+        navigation.navigate('Post', { url: urls[prevIndex], urls: urls, i: prevIndex, viewerUserID: viewerUserID });
     };
 
     const handleNext = () => {
         const nextIndex = Math.min(i + 1, urls.length - 1);
-        navigation.navigate('Post', { url: urls[nextIndex], urls: urls, i: nextIndex });
+        navigation.navigate('Post', { url: urls[nextIndex], urls: urls, i: nextIndex, viewerUserID: viewerUserID });
     };
 
     const [user1ID, setUser1ID] = useState();

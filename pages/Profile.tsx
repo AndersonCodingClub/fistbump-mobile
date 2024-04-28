@@ -250,7 +250,7 @@ export default function Profile({route, navigation}: {route: any, navigation: an
             
             <View style={styles.galleryContainer}>
                 {imageUrls.map((url, index) => (
-                    <TouchableOpacity key={index} onPress={() => navigation.navigate("Post", { url: url, urls: imageUrls, i: index})} style={styles.galleryImageBoundingBox}>
+                    <TouchableOpacity key={index} onPress={() => navigation.navigate("Post", { url: url, urls: imageUrls, i: index, viewerUserID: viewerUserID })} style={styles.galleryImageBoundingBox}>
                         <ImageBackground source={{ uri: url }} style={styles.galleryBackgroundImage} />
                     </TouchableOpacity>
                 ))}
