@@ -48,7 +48,7 @@ export default function Profile({route, navigation}: {route: any, navigation: an
     const [postCount, setPostCount] = useState('0');
     const [imageUrls, setImageUrls] = useState<string[]>([]);
     const [isFollowing, setIsFollowing] = useState(true);
-    const [profilePicture, setProfilePicture] = useState(require('../assets/adaptive-icon.png'));
+    const [profilePicture, setProfilePicture] = useState(require('../assets/fistbump_default_pfp.png'));
 
     useEffect(() => {
         const getUserInfo = async () => {
@@ -65,7 +65,7 @@ export default function Profile({route, navigation}: {route: any, navigation: an
                     if (data.profilePicture && data.profilePicture.trim() !== '') {
                         setProfilePicture({ uri: `${serverIP}/serve/${data.profilePicture}` });
                     } else {
-                        setProfilePicture(require('../assets/adaptive-icon.png'));
+                        setProfilePicture(require('../assets/fistbump_default_pfp.png'));
                     }
                 } else {
                     console.error('Failed to load user info');
