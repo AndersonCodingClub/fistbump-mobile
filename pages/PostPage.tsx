@@ -77,7 +77,8 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: 'darkgray'
     },
 
     backgroundContainer: {
