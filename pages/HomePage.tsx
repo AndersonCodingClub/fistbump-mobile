@@ -26,7 +26,6 @@ async function getImageUrls() {
         const data = await response.json();
         if (data.msg === 'SUCCESS' && Array.isArray(data.image_paths)) {
             const imageUrls = data.image_paths.map((path: string) => baseUrl + path);
-            console.log('Full Image URLs:', imageUrls);
             return imageUrls;
         }
         return [];

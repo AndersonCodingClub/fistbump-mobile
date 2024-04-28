@@ -20,7 +20,6 @@ async function getImageUrls() {
         const data = await response.json();
         if (data.msg === 'SUCCESS' && Array.isArray(data.image_paths)) {
             const imageUrls = data.image_paths.map((path: string) => baseUrl + path);
-            console.log('Full Image URLs:', imageUrls);
             return imageUrls;
         }
         return [];
@@ -181,12 +180,6 @@ export default function Profile({route, navigation}: {route: any, navigation: an
                             })
                         });
                         const uploadData = await uploadResponse.json();
-                        if (uploadData.msg === 'SUCCESS') {
-                            Alert.alert("Success", "Profile picture updated successfully.");
-                        } else {
-                            console.error('Failed to upload profile picture');
-                            Alert.alert("Upload failed", "Failed to upload profile picture.");
-                        }
                     } catch (error) {
                         console.error('Network error:', error);
                         Alert.alert("Network error", "Failed to communicate with the server.");
