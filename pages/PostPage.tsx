@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Button, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, Dimensions, FlatList } from 'react-native';
 import { useFonts } from 'expo-font';
 
 
@@ -9,18 +9,9 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
         'Roobert-Bold': require('../assets/Roobert-Bold.otf')
     });
 
-    const { url, urls, i, viewerUserID } = route.params;
-    const metadataUrl = url + '/metadata';
-
-    const handlePrevious = () => {
-        const prevIndex = Math.max(i - 1, 0);
-        navigation.navigate('Post', { url: urls[prevIndex], urls: urls, i: prevIndex, viewerUserID: viewerUserID });
-    };
-
-    const handleNext = () => {
-        const nextIndex = Math.min(i + 1, urls.length - 1);
-        navigation.navigate('Post', { url: urls[nextIndex], urls: urls, i: nextIndex, viewerUserID: viewerUserID });
-    };
+    const { urls, i, viewerUserID } = route.params;
+    const metadataUrl = urls[i] + '/metadata';
+    const windowWidth = Dimensions.get('window').width;
 
     const [user1ID, setUser1ID] = useState();
     const [user2ID, setUser2ID] = useState();
@@ -46,30 +37,38 @@ export default function PostPage({ route, navigation }: {route: any, navigation:
             });
     }, [metadataUrl]);
 
+    const renderItem = ({ item }: { item: string }) => (
+        <Image source={{ uri: item }} style={styles.background} />
+    );
+
     return (
         <View style={styles.container}>
-            <View style={styles.backgroundContainer}>
-                <Image source={{uri: url}} style={styles.background}/>
-                <View style={{ position: 'absolute', top: 300, left: 75 }}>
-                    <Button title="Previous" onPress={handlePrevious}></Button>
+            <FlatList
+                data={urls}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                pagingEnabled
+                initialScrollIndex={i}
+                getItemLayout={(data, index) => ({
+                    length: windowWidth, offset: windowWidth * index, index
+                })}
+                showsHorizontalScrollIndicator={false}
+            />
+
+            <View style={{ position: 'absolute', top: 680, left: 50 }}>
+                <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user1ID, viewerUserID: viewerUserID })} >
+                        <Text style={[styles.infoText, styles.nameText]}>{user1Name}</Text>
+                    </TouchableOpacity>
+                    <Text style={[styles.infoText]}>{'  &  '}</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user2ID, viewerUserID: viewerUserID })} >
+                        <Text style={[styles.infoText, styles.nameText]}>{user2Name}</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={{ position: 'absolute', top: 300, left: 255 }}>
-                    <Button title="Next" onPress={handleNext}></Button>
-                </View>
-                <View style={{ position: 'absolute', top: 680, left: 50 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user1ID, viewerUserID: viewerUserID })} >
-                            <Text style={[styles.infoText, styles.nameText]}>{user1Name}</Text>
-                        </TouchableOpacity>
-                        <Text style={[styles.infoText]}>{'  &  '}</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('Profile', { userID: user2ID, viewerUserID: viewerUserID })} >
-                            <Text style={[styles.infoText, styles.nameText]}>{user2Name}</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ position: 'absolute', top: 720, left: 50 }}>
-                    <Text style={styles.infoText}>{datePublished}</Text>
-                </View>
+            </View>
+            <View style={{ position: 'absolute', top: 720, left: 50 }}>
+                <Text style={styles.infoText}>{datePublished}</Text>
             </View>
         </View>
     );
@@ -94,11 +93,9 @@ const styles = StyleSheet.create({
     },
 
     background: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: '#000'
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        resizeMode: 'cover'
     },
 
     infoText: {
