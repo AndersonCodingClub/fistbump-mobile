@@ -17,7 +17,7 @@
     "buffer": "^6.0.3",
     "expo": "^51.0.8",
     "expo-app-loading": "^2.1.1",
-    "expo-camera": "~15.0.9",
+    "expo-camera": "~15.0.10",
     "expo-font": "~12.0.5",
     "expo-image-picker": "~15.0.5",
     "expo-status-bar": "~1.12.1",
