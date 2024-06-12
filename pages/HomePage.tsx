@@ -74,9 +74,6 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
             const data = await response.json();
             if (data.msg === 'SUCCESS') {
                 setMatchUserRow(data.match_user_row);
-            } else {
-                console.log('no');
-                console.log(data);
             }
         } catch (error) {
             console.error(error);
