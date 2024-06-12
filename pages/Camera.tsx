@@ -35,7 +35,7 @@ export default function CameraPage({ route, navigation }: {route: any, navigatio
             <CameraView ref={cameraRef} style={styles.camera} facing="front">
                 <Bumper
                     title={"Daily Fistbump:"}
-                    subtext={"placeholder"}
+                    subtext={matchUserRow[1]}
                     location={'top'}
                     onPress={() => navigation.navigate('Home', { username: username })}
                 />

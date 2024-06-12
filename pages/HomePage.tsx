@@ -73,7 +73,10 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
             });
             const data = await response.json();
             if (data.msg === 'SUCCESS') {
-                setMatchUserRow(data.match_user_row)
+                setMatchUserRow(data.match_user_row);
+            } else {
+                console.log('no');
+                console.log(data);
             }
         } catch (error) {
             console.error(error);
@@ -128,7 +131,7 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
             </ScrollView>
             <Bumper 
                 title={"Daily Fistbump:"} 
-                subtext={"placeholder"} 
+                subtext={matchUserRow[1]} 
                 location={'bottom'}
                 onPress={() => navigation.navigate("CameraPage", { username: username, userID: userID, matchUserRow: matchUserRow })}
             />
