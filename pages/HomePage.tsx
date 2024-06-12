@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import { useIsFocused } from '@react-navigation/native';
+import Bumper from '../components/Bumper';
 
 type BackgroundButtonProps = {
     onPress: () => void;
@@ -36,12 +37,6 @@ async function getImageUrls() {
     }
 }
 
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle, subtext, matchUserRow}) => (
-    <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
-      <Text style={styles.fistbumpButtonText}>{title}</Text>
-      <Text style={styles.fistbumpButtonSubText}>{matchUserRow ? matchUserRow[1] : subtext}</Text>
-    </TouchableOpacity>
-);
 
 const ProfileButton: React.FC<BackgroundButtonProps> = ({ onPress, title, buttonStyle, subtext, matchUserRow}) => (
     <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
@@ -131,12 +126,11 @@ export default function HomePage({route, navigation}: {route: any, navigation: a
                     ))}
                 </View>
             </ScrollView>
-            <BackgroundButton 
+            <Bumper 
                 title={"Daily Fistbump:"} 
-                subtext={"Loading..."} 
-                buttonStyle={styles.fistbumpButton} 
+                subtext={"placeholder"} 
+                location={'bottom'}
                 onPress={() => navigation.navigate("CameraPage", { username: username, userID: userID, matchUserRow: matchUserRow })}
-                matchUserRow={matchUserRow}
             />
         </SafeAreaView>
     );

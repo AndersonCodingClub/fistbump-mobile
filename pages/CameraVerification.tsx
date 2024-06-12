@@ -4,7 +4,7 @@ import { useFonts } from 'expo-font';
 import { useRoute } from "@react-navigation/native"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
-
+import Bumper from '../components/Bumper';
 
 type BackgroundButtonProps = {
     onPress: () => void;
@@ -50,8 +50,12 @@ const CameraVerification = ({ route, navigation }: {navigation: any, route: any}
 
     return(
         <ImageBackground style={[styles.image, styles.reverse]} source={{uri: `data:image/jpeg;base64,${pic.base64}`}}>
-            <View style={styles.fistbumpButton}>
-                <BackgroundButton title={"Fistbump"} buttonStyle={[styles.fistbumpButton, styles.reverse]} onPress={() => console.log('button!')}></BackgroundButton>
+            <View style={[styles.fistbumpButton, styles.reverse]}>
+                <Bumper
+                    title={'Confirm'}
+                    location={'top'}
+                    onPress={() => console.log('button!')}
+                />
             </View>
 
             <View style={styles.acceptButtonContainer}>

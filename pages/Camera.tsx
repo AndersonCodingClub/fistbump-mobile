@@ -1,28 +1,8 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import Bumper from '../components/Bumper';
 
-
-type BackgroundButtonProps = {
-    onPress: () => void;
-    title: string;
-    subtext: string;
-    buttonStyle: any;
-    streak: number;
-};
-
-const BackgroundButton: React.FC<BackgroundButtonProps> = ({ onPress, title, subtext, buttonStyle, streak }) => (
-    <TouchableOpacity activeOpacity={1} onPress={onPress} style={buttonStyle}>
-        <View style={styles.fistbumpButtonTextContainer}>
-            <Text style={styles.fistbumpButtonText}>{title}</Text>
-            <Text style={styles.fistbumpButtonSubText}>{subtext}</Text>
-        </View>
-        <View style={styles.fistbumpButtonTextContainer}>
-            <Image style={styles.fistbumpButtonStreakIcon} source={require('../assets/fire.png')} />
-            <Text style={styles.fistbumpButtonStreakNumber}>{streak}</Text>
-        </View>
-    </TouchableOpacity>
-);
 
 export default function CameraPage({ route, navigation }: {route: any, navigation: any}) {
     const [permission, requestPermission] = useCameraPermissions();
@@ -44,7 +24,7 @@ export default function CameraPage({ route, navigation }: {route: any, navigatio
     }
 
     const takePicture = async () => {
-        if (cameraRef.current) {
+        if (cameraRef.current !== null) {
             const photo = await cameraRef.current.takePictureAsync({ base64: true });
             navigation.navigate('CameraVerification', { pic: photo, username: username, matchUserRow: matchUserRow });
         }
@@ -53,15 +33,12 @@ export default function CameraPage({ route, navigation }: {route: any, navigatio
     return (
         <View style={styles.container}>
             <CameraView ref={cameraRef} style={styles.camera} facing="front">
-                <View style={styles.fistbumpButton}>
-                    <BackgroundButton
-                        title={"Daily Fistbump:"}
-                        subtext={matchUserRow[1] || ""}
-                        streak={0}
-                        buttonStyle={styles.fistbumpButton}
-                        onPress={() => navigation.navigate('Home', { username: username })}
-                    />
-                </View>
+                <Bumper
+                    title={"Daily Fistbump:"}
+                    subtext={"placeholder"}
+                    location={'top'}
+                    onPress={() => navigation.navigate('Home', { username: username })}
+                />
                 <View style={styles.captureButtonContainer}>
                     <TouchableOpacity onPress={takePicture} style={styles.captureButton}>
                     </TouchableOpacity>

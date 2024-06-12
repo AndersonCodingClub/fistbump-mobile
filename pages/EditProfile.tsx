@@ -16,7 +16,7 @@ export default function EditProfile ({route, navigation}: {route: any, navigatio
     });
     
     const [selectedImage, setSelectedImage] = useState('')
-    const [newName, setNewname] = useState("");
+    const [newName, setNewName] = useState("");
     const [newEmail, setNewEmail] = useState("");
     const[newPassword, setNewPassword] = useState("");
 

@@ -1,51 +1,86 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import BackgroundButton from './BackgroundButton';
 
 interface BumperProps {
     location: string;
     title: string;
     subtext?: string;
-    image?: string;
     onPress: () => void;
     fontSize?: any;
 }
 
 const defaultProps = {
     subtext: '',
-    image: '',
     fontSize: 35
+}
+
+function configureStyles (location: any, subtext: string) {
+    if (location == "bottom") {
+        styles.fistbumpButtonLocation = {bottom: 0}
+        styles.fistbumpButtonBorderRadius = {borderTopStartRadius: 25}
+    } else if (location == "top") {
+        styles.fistbumpButtonLocation = {top: 0}
+        styles.fistbumpButtonBorderRadius = {borderBottomStartRadius: 25}
+    } else {
+        throw("Bumper location must be 'top' or 'bottom'");
+    }
+
+    if (subtext == '') {
+        styles.fistbumpButtonSubText = {        
+        fontFamily: 'Roobert',
+        color: '#372F35',
+        textAlign: 'center',
+        fontSize: 0,
+        marginTop: 0,
+        flex: 3
+        };
+    }
 }
 
 function Bumper (propsIn: BumperProps) {
     const props = {...defaultProps, ...propsIn}
+    configureStyles(props.location, props.subtext);
 
     return (
-        <BackgroundButton fontSize={props.fontSize} title={props.title}  style={styles.fistbumpButton} onPress={props.onPress} opacity={1}>
-            <Text style={styles.fistbumpButtonSubText}></Text>
-        </BackgroundButton>
+        <TouchableOpacity activeOpacity={1} onPress={props.onPress} style={[styles.fistbumpButton, styles.fistbumpButtonLocation, styles.fistbumpButtonBorderRadius]}>
+            <Text style={[styles.fistbumpButtonTitle, {fontSize: props.fontSize} ]}>{props.title}</Text>
+            <Text style={styles.fistbumpButtonSubText}>{props.subtext}</Text>
+        </TouchableOpacity>    
     );
 }
 
 const styles = StyleSheet.create({
     fistbumpButton: {
         position: 'absolute',
-        bottom: 0,
         left: 0,
         right: 0,
         backgroundColor: '#BCB4F7',
         width: '100%',
-        borderRadius: 25,
-        paddingTop: 50,
-        paddingBottom: 50,
-        justifyContent: 'flex-start'
+        paddingTop: 40,
+        paddingBottom: 40,
+        justifyContent: 'flex-start',
+
     },
 
-    fistbumpButtonSubText: {
+    fistbumpButtonLocation: {},
+
+    fistbumpButtonBorderRadius: {},
+
+    fistbumpButtonTitle: {
         fontFamily: 'Roobert-Bold',
         color: '#372F35',
         textAlign: 'center',
         fontSize: 20,
         marginTop: 10,
+        flex: 3,
+    },
+
+    fistbumpButtonSubText: {
+        fontFamily: 'Roobert',
+        color: '#372F35',
+        textAlign: 'center',
+        fontSize: 25,
+        marginTop: 0,
         flex: 3,
     },
 });
